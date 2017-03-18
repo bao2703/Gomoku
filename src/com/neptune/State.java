@@ -30,6 +30,7 @@ public class State {
     }
 
     public void performMove(int row, int col) {
+        if (board[row][col] != Mark.BLANK) return;
         board[row][col] = getCurrentPlayer();
         moveHistory.push(new Move(row, col));
     }
@@ -97,6 +98,10 @@ public class State {
             state.performMove(center, center);
             result.add(state);
         } else {
+            if (moveHistory.size() == 8)
+                Rule.RADIUS = 4;
+            else if (moveHistory.size() == 11)
+                Rule.RADIUS = 5;
             int top = center - Rule.RADIUS;
             int bottom = center + Rule.RADIUS;
             for (int i = top; i <= bottom; i++) {

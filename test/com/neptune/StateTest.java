@@ -1,10 +1,12 @@
 package com.neptune;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Created by Neptune on 3/18/2017.
@@ -41,7 +43,7 @@ class StateTest {
     @Test
     void performMove() {
         state.performMove(5, 5);
-        Assertions.assertEquals(state.getPlayer(5,5), state.board[5][5]);
+        Assertions.assertEquals(state.getPlayer(5, 5), state.board[5][5]);
     }
 
     @Test
