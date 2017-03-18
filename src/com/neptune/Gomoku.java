@@ -10,7 +10,13 @@ public class Gomoku {
         state = new State();
     }
 
-    public boolean performMove(int row, int col) {
-        return state.performMove(row, col);
+    public void performMove(int row, int col) {
+        state.performMove(row, col);
+    }
+
+    public Move getBestMove() {
+        AlphaBeta alphaBeta = new AlphaBeta();
+        alphaBeta.exec(state, Rule.MAX_DEPTH);
+        return null;
     }
 }

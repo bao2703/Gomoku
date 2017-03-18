@@ -26,13 +26,9 @@ public class State {
         moveHistory.addAll(state.moveHistory);
     }
 
-    public boolean performMove(int row, int col) {
-        if (board[row][col] != Mark.BLANK) {
-            return false;
-        }
+    public void performMove(int row, int col) {
         board[row][col] = getCurrentPlayer();
         moveHistory.push(new Move(row, col));
-        return true;
     }
 
     public Mark getCurrentPlayer() {
@@ -90,7 +86,24 @@ public class State {
 
     public ArrayList<State> getSuccessors() {
         ArrayList<State> result = new ArrayList<>();
-
+        int center = Rule.SIZE / 2;
+        if (moveHistory.isEmpty()) {
+            State state = new State();
+            state.performMove(center, center);
+            result.add(state);
+        } else {
+            int top = center - Rule.RADIUS;
+            int bottom = center + Rule.RADIUS;
+            for (int i = top; i <= bottom; i++) {
+                for (int j = top; j <= bottom; j++) {
+                    if (board[i][j] == Mark.BLANK) {
+                        State state = new State(this);
+                        state.performMove(i, j);
+                        result.add(state);
+                    }
+                }
+            }
+        }
 
         return result;
     }

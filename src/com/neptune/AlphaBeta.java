@@ -7,7 +7,11 @@ import java.util.ArrayList;
  */
 public class AlphaBeta {
 
-    public static int alphaBeta(State currentState, int alpha, int beta, int depth) {
+    public int exec(State currentState, int depth) {
+        return exec(currentState, Integer.MIN_VALUE, Integer.MAX_VALUE, depth);
+    }
+
+    private int exec(State currentState, int alpha, int beta, int depth) {
         ArrayList<State> successors = currentState.getSuccessors();
         if (successors.isEmpty() || depth == 0) {
             return currentState.getHeuristic();
@@ -16,7 +20,7 @@ public class AlphaBeta {
         if (currentState.getCurrentPlayer() == Mark.X) {
             bestValue = alpha;
             for (State successor : successors) {
-                bestValue = Math.max(bestValue, alphaBeta(successor, bestValue, beta, depth - 1));
+                bestValue = Math.max(bestValue, exec(successor, bestValue, beta, depth - 1));
                 if (bestValue >= beta) {
                     break;
                 }
@@ -24,7 +28,7 @@ public class AlphaBeta {
         } else {
             bestValue = beta;
             for (State successor : successors) {
-                bestValue = Math.min(bestValue, alphaBeta(successor, alpha, bestValue, depth - 1));
+                bestValue = Math.min(bestValue, exec(successor, alpha, bestValue, depth - 1));
                 if (bestValue <= alpha) {
                     break;
                 }

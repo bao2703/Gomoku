@@ -1,6 +1,9 @@
 package com.neptune;
 
 import org.junit.jupiter.api.*;
+
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -12,6 +15,19 @@ class StateTest {
     @BeforeEach
     void setUp() {
         state = new State();
+    }
+
+    @Test
+    void getSuccessors_1_in_first_move() {
+        ArrayList<State> successors = state.getSuccessors();
+        assertEquals(1, successors.size());
+    }
+
+    @Test
+    void getSuccessors_24_in_second_move() {
+        ArrayList<State> successors = state.getSuccessors();
+        successors = successors.get(0).getSuccessors();
+        assertEquals(24, successors.size());
     }
 
     @Test
@@ -39,7 +55,7 @@ class StateTest {
         for (int i = 0; i < 5; i++) {
             state.board[0][i] = Mark.X;
         }
-        
+
         boolean actual = state.checkHorizontal(new Move(0, 0), Mark.X);
         assertEquals(true, actual);
     }
