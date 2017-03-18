@@ -1,6 +1,5 @@
 package com.neptune;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Stack;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 public class State {
     public Mark[][] board;
     private int heuristic;
-    private Stack<Point> moveHistory;
+    private Stack<Move> moveHistory;
 
     public State() {
         board = new Mark[Rule.SIZE][Rule.SIZE];
@@ -27,17 +26,27 @@ public class State {
         moveHistory.addAll(state.moveHistory);
     }
 
-    public boolean performMove(Point move) {
-        if (board[move.row][move.col] != Mark.BLANK) {
+    public boolean performMove(int row, int col) {
+        if (board[row][col] != Mark.BLANK) {
             return false;
         }
-        board[move.row][move.col] = getCurrentPlayer();
-        moveHistory.push(move);
+        board[row][col] = getCurrentPlayer();
+        moveHistory.push(new Move(row, col));
         return true;
     }
 
     public Mark getCurrentPlayer() {
         return moveHistory.size() % 2 == 0 ? Mark.O : Mark.X;
+    }
+
+    public Mark getPlayer(int row, int col) {
+        Move move = new Move(row, col);
+        for (int i = 0; i < moveHistory.size(); i++) {
+            if (moveHistory.get(i).equals(move)) {
+                return i % 2 == 0 ? Mark.O : Mark.X;
+            }
+        }
+        return null;
     }
 
     public static Comparator<State> HeuristicComparator = new Comparator<State>() {

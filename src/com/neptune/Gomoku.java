@@ -11,6 +11,6 @@ public class Gomoku {
     }
 
     public boolean performMove(int row, int col) {
-        return state.performMove(new Point(row, col));
+        return state.performMove(row, col);
     }
 }

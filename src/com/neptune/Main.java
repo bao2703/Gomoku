@@ -12,6 +12,8 @@ public class Main {
                 int x = scanner.nextInt();
                 int y = scanner.nextInt();
                 gomoku.performMove(x, y);
+            } else {
+                scanner.nextInt();
             }
             System.out.println(gomoku.state.toString());
         }
