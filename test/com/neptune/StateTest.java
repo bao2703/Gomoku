@@ -31,6 +31,14 @@ class StateTest {
     }
 
     @Test
+    void getSuccessors_in_third_move() {
+        ArrayList<State> successors = state.getSuccessors();
+        successors = successors.get(0).getSuccessors();
+        successors = successors.get(0).getSuccessors();
+        assertEquals(23, successors.size());
+    }
+
+    @Test
     void performMove() {
         state.performMove(5, 5);
         Assertions.assertEquals(state.getPlayer(5,5), state.board[5][5]);

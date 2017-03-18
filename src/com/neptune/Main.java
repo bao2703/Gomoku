@@ -13,7 +13,8 @@ public class Main {
                 int y = scanner.nextInt();
                 gomoku.performMove(x, y);
             } else {
-                scanner.nextInt();
+                Move move = gomoku.getBestMove();
+                gomoku.performMove(move.row, move.col);
             }
             System.out.println(gomoku.state.toString());
         }

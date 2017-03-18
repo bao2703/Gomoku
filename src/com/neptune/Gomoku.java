@@ -16,7 +16,6 @@ public class Gomoku {
 
     public Move getBestMove() {
         AlphaBeta alphaBeta = new AlphaBeta();
-        alphaBeta.exec(state, Rule.MAX_DEPTH);
-        return null;
+        return alphaBeta.exec(state, Rule.MAX_DEPTH).getLastMove();
     }
 }

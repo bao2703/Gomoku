@@ -10,7 +10,7 @@ import java.util.Stack;
  */
 public class State {
     public Mark[][] board;
-    private int heuristic;
+    public int heuristic;
     private Stack<Move> moveHistory;
 
     public State() {
@@ -23,7 +23,10 @@ public class State {
 
     public State(final State state) {
         this();
-        moveHistory.addAll(state.moveHistory);
+        heuristic = state.heuristic;
+        for (Move move : state.moveHistory) {
+            performMove(move.row, move.col);
+        }
     }
 
     public void performMove(int row, int col) {
@@ -46,6 +49,8 @@ public class State {
     }
 
     public Move getLastMove() {
+        if (moveHistory.isEmpty())
+            return null;
         return moveHistory.peek();
     }
 
