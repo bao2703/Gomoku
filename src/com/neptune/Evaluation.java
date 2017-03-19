@@ -13,41 +13,25 @@ public class Evaluation {
     }
 
     private int simple(int num) {
-        if (num == 0) {
-            return 0;
-        }
         return (int) Math.pow(4, num);
     }
 
     public int computeHeuristic(State state) {
         int heuristic = 0;
         for (int row = 0; row < Rule.SIZE; row++) {
-            for (int col = 0; col < Rule.SIZE - Rule.WIN_REQUIRED; col++) {
-                heuristic += computeHorizontal(state, row, col);
-            }
-        }
-
-        for (int row = 0; row < Rule.SIZE - Rule.WIN_REQUIRED; row++) {
             for (int col = 0; col < Rule.SIZE; col++) {
+                heuristic += computeHorizontal(state, row, col);
                 heuristic += computeVertical(state, row, col);
-            }
-        }
-
-        for (int row = 0; row < Rule.SIZE - Rule.WIN_REQUIRED - 1; row++) {
-            for (int col = 0; col < Rule.SIZE - Rule.WIN_REQUIRED - 1; col++) {
                 heuristic += computeDiagonalPrimary(state, row, col);
-            }
-        }
-
-        for (int row = Rule.WIN_REQUIRED - 1; row < Rule.SIZE; row++)
-            for (int col = 0; col < Rule.SIZE - 4; col++) {
                 heuristic += computeDiagonalSub(state, row, col);
             }
-
+        }
         return heuristic;
     }
 
     public int computeHorizontal(State state, int currentRow, int currentCol) {
+        if (!state.canFiveInARow(currentCol))
+            return 0;
         Count count = new Count();
         for (int i = 0; i < Rule.WIN_REQUIRED; i++) {
             count.exec(state.board[currentRow][currentCol + i]);
@@ -56,6 +40,8 @@ public class Evaluation {
     }
 
     public int computeVertical(State state, int currentRow, int currentCol) {
+        if (!state.canFiveInAColumn(currentRow))
+            return 0;
         Count count = new Count();
         for (int i = 0; i < Rule.WIN_REQUIRED; i++) {
             count.exec(state.board[currentRow + i][currentCol]);
@@ -64,6 +50,9 @@ public class Evaluation {
     }
 
     public int computeDiagonalPrimary(State state, int currentRow, int currentCol) {
+        if (!state.canFiveInARow(currentCol) || !state.canFiveInAColumn(currentRow)) {
+            return 0;
+        }
         Count count = new Count();
         for (int i = 0; i < Rule.WIN_REQUIRED; i++) {
             count.exec(state.board[currentRow + i][currentCol + i]);
@@ -72,6 +61,9 @@ public class Evaluation {
     }
 
     public int computeDiagonalSub(State state, int currentRow, int currentCol) {
+        if (currentRow < Rule.WIN_REQUIRED - 1 || !state.canFiveInARow(currentCol)) {
+            return 0;
+        }
         Count count = new Count();
         for (int i = 0; i < Rule.WIN_REQUIRED; i++) {
             count.exec(state.board[currentRow - i][currentCol + i]);

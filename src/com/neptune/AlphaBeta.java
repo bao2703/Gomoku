@@ -18,12 +18,12 @@ public class AlphaBeta {
     }
 
     private int exec(State currentState, int alpha, int beta, int depth) {
-        ArrayList<State> successors = currentState.getSuccessors();
-        if (successors.isEmpty() || depth == 0) {
+        if (depth == 0) {
             int heuristic = evaluation.computeHeuristic(currentState);
             mapAlphaBeta.put(heuristic, currentState);
             return heuristic;
         }
+        ArrayList<State> successors = currentState.getSuccessors();
         int bestValue;
         if (currentState.getCurrentPlayer() == Mark.X) {
             bestValue = alpha;

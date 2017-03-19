@@ -115,7 +115,7 @@ public class State {
     }
 
     public boolean checkHorizontal(Move move, Mark player) {
-        if (move.col > Rule.SIZE - Rule.WIN_REQUIRED) {
+        if (!canFiveInARow(move.col)) {
             return false;
         }
         for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
@@ -127,7 +127,7 @@ public class State {
     }
 
     public boolean checkVertical(Move move, Mark player) {
-        if (move.row > Rule.SIZE - Rule.WIN_REQUIRED) {
+        if (!canFiveInAColumn(move.row)) {
             return false;
         }
         for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
@@ -139,7 +139,7 @@ public class State {
     }
 
     public boolean checkDiagonalPrimary(Move move, Mark player) {
-        if (move.row > Rule.SIZE - Rule.WIN_REQUIRED || move.col > Rule.SIZE - Rule.WIN_REQUIRED) {
+        if (!canFiveInARow(move.col) || !canFiveInAColumn(move.row)) {
             return false;
         }
         for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
@@ -151,7 +151,7 @@ public class State {
     }
 
     public boolean checkDiagonalSub(Move move, Mark player) {
-        if (move.row < Rule.WIN_REQUIRED - 1 || move.col > Rule.SIZE - Rule.WIN_REQUIRED) {
+        if (move.row < Rule.WIN_REQUIRED - 1 || !canFiveInARow(move.col)) {
             return false;
         }
         for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
@@ -160,5 +160,13 @@ public class State {
             }
         }
         return true;
+    }
+
+    public boolean canFiveInARow(int col) {
+        return col + Rule.WIN_REQUIRED <= Rule.SIZE;
+    }
+
+    public boolean canFiveInAColumn(int row) {
+        return row + Rule.WIN_REQUIRED <= Rule.SIZE;
     }
 }
