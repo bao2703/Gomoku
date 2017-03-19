@@ -11,16 +11,26 @@ import java.io.IOException;
  * Created by Neptune on 3/18/2017.
  */
 public class GomokuFrame extends JFrame {
-    private GameState gameState = GameState.ON_GOING;
     public Gomoku gomoku;
+    private GameState gameState = GameState.ON_GOING;
     private MarkButton[][] markButton;
     private File xFile = new File("X.txt");
-    private File oFile = new File("O.txt");;
+    private File oFile = new File("O.txt");
 
     public GomokuFrame() {
         gomoku = new Gomoku();
         markButton = new MarkButton[Rule.SIZE][Rule.SIZE];
         initComponents();
+
+        if (xFile.exists()) {
+            xFile.delete();
+        }
+        if (oFile.exists()) {
+            oFile.delete();
+        }
+
+        Move move = gomoku.getBestMove();
+        markButton[move.row][move.col].makeMove();
     }
 
     private void initComponents() {
@@ -51,25 +61,28 @@ public class GomokuFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (active) {
-                gomoku.performMove(row, col);
-                this.changeIcon();
+                this.makeMove();
                 try {
-                    gomoku.writeState(xFile);
+                    gomoku.writeState(oFile);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
 
                 if (gameState == GameState.ON_GOING) {
                     Move move = gomoku.getBestMove();
-                    gomoku.performMove(move.row, move.col);
-                    markButton[move.row][move.col].changeIcon();
+                    markButton[move.row][move.col].makeMove();
                     try {
-                        gomoku.writeState(oFile);
+                        gomoku.writeState(xFile);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
                 }
             }
+        }
+
+        public void makeMove() {
+            gomoku.performMove(row, col);
+            changeIcon();
         }
 
         private void changeIcon() {
@@ -81,7 +94,6 @@ public class GomokuFrame extends JFrame {
                 this.setText("X");
                 this.setForeground(Color.blue);
             }
-
         }
     }
 }

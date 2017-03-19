@@ -9,9 +9,7 @@ import java.util.Stack;
  * Created by Neptune on 3/18/2017.
  */
 public class State {
-    public static Comparator<State> HeuristicComparator = (a, b) -> b.getHeuristic() - a.getHeuristic();
     public Mark[][] board;
-    public int heuristic;
     private Stack<Move> moveHistory;
 
     public State() {
@@ -24,7 +22,6 @@ public class State {
 
     public State(final State state) {
         this();
-        heuristic = state.heuristic;
         for (Move move : state.moveHistory) {
             performMove(move.row, move.col);
         }
@@ -54,14 +51,6 @@ public class State {
         if (moveHistory.isEmpty())
             return null;
         return moveHistory.peek();
-    }
-
-    public int getHeuristic() {
-        return heuristic;
-    }
-
-    public void setHeuristic(int heuristic) {
-        this.heuristic = heuristic;
     }
 
     @Override

@@ -1,11 +1,17 @@
 package com.neptune;
 
 import javax.swing.*;
-import java.io.IOException;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
+//        Scanner scanner = new Scanner(System.in);
+//        int in = scanner.nextInt();
+//        Mark firstPlayer = Mark.O;
+//        if (in == 1) {
+//            firstPlayer = Mark.X;
+//        }
         GomokuFrame gomokuFrame = new GomokuFrame();
         gomokuFrame.setResizable(false);
         gomokuFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
