@@ -9,6 +9,7 @@ import java.util.Stack;
  * Created by Neptune on 3/18/2017.
  */
 public class State {
+    public static Comparator<State> HeuristicComparator = (a, b) -> b.getHeuristic() - a.getHeuristic();
     public Mark[][] board;
     public int heuristic;
     private Stack<Move> moveHistory;
@@ -54,13 +55,6 @@ public class State {
             return null;
         return moveHistory.peek();
     }
-
-    public static Comparator<State> HeuristicComparator = new Comparator<State>() {
-        @Override
-        public int compare(State a, State b) {
-            return b.getHeuristic() - a.getHeuristic();
-        }
-    };
 
     public int getHeuristic() {
         return heuristic;
