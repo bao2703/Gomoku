@@ -4,7 +4,7 @@ package com.neptune;
  * Created by Neptune on 3/18/2017.
  */
 public class Evaluation {
-    public static int simpleDef(int num) {
+    private static int simpleDef(int num) {
         int result = simple(num);
         if (num == 4) {
             return result * 2;
@@ -12,7 +12,7 @@ public class Evaluation {
         return result;
     }
 
-    public static int simple(int num) {
+    private static int simple(int num) {
         if (num == 0) {
             return 0;
         }
@@ -56,6 +56,39 @@ public class Evaluation {
                 }
             }
         }
+
+        for (int row = 0; row < Rule.SIZE - Rule.WIN_REQUIRED - 1; row++) {
+            for (int col = 0; col < Rule.SIZE - Rule.WIN_REQUIRED - 1; col++) {
+                x = 0;
+                o = 0;
+                for (int i = 0; i < 5; i++) {
+                    if (state.board[row + i][col + i] == Mark.O)
+                        o++;
+                    if (state.board[row + i][col + i] == Mark.X)
+                        x++;
+                }
+                if (x * o == 0 && x != o) {
+                    heuristic -= simpleDef(o);
+                    heuristic += simpleDef(x);
+                }
+            }
+        }
+
+        for (int row = Rule.WIN_REQUIRED - 1; row < Rule.SIZE; row++)
+            for (int col = 0; col < Rule.SIZE - 4; col++) {
+                x = 0;
+                o = 0;
+                for (int i = 0; i < 5; i++) {
+                    if (state.board[row - i][col + i] == Mark.O)
+                        o++;
+                    if (state.board[row - i][col + i] == Mark.X)
+                        x++;
+                }
+                if (x * o == 0 && x != o) {
+                    heuristic -= simpleDef(o);
+                    heuristic += simpleDef(x);
+                }
+            }
 
         return heuristic;
     }
