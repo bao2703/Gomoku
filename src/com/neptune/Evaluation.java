@@ -40,7 +40,7 @@ public class Evaluation {
     }
 
     public int computeVertical(State state, int currentRow, int currentCol) {
-        if (!state.canFiveInAColumn(currentRow))
+        if (!state.canFiveInARow(currentRow))
             return 0;
         Count count = new Count();
         for (int i = 0; i < Rule.WIN_REQUIRED; i++) {
@@ -50,7 +50,7 @@ public class Evaluation {
     }
 
     public int computeDiagonalPrimary(State state, int currentRow, int currentCol) {
-        if (!state.canFiveInARow(currentCol) || !state.canFiveInAColumn(currentRow)) {
+        if (!state.canFiveInARow(currentCol) || !state.canFiveInARow(currentRow)) {
             return 0;
         }
         Count count = new Count();

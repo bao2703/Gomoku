@@ -61,7 +61,6 @@ class StateTest {
 
     @Test
     public void checkHorizontal_has_winner() {
-        State state = new State();
         for (int i = 0; i < 5; i++) {
             state.board[0][i] = Mark.X;
         }
@@ -72,7 +71,6 @@ class StateTest {
 
     @Test
     public void checkVertical_has_winner() {
-        State state = new State();
         for (int i = 0; i < 5; i++) {
             state.board[i][0] = Mark.X;
         }
@@ -83,7 +81,6 @@ class StateTest {
 
     @Test
     public void checkDiagonalPrimary_has_winner() {
-        State state = new State();
         for (int i = 0; i < 5; i++) {
             state.board[i][i] = Mark.X;
         }
@@ -94,12 +91,22 @@ class StateTest {
 
     @Test
     public void checkDiagonalSub_has_winner() {
-        State state = new State();
         for (int i = 0; i < 5; i++) {
             state.board[i][Rule.SIZE - i - 1] = Mark.X;
         }
 
         boolean actual = state.checkDiagonalSub(new Move(4, 6), Mark.X);
         assertEquals(true, actual);
+    }
+
+    @Test
+    public void canFiveInARow() {
+        int index = 7;
+        for (int i = 0; i < 7; i++) {
+            assertEquals(true, state.canFiveInARow(i));
+        }
+        for (int i = index; i < Rule.SIZE; i++) {
+            assertEquals(false, state.canFiveInARow(i));
+        }
     }
 }

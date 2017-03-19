@@ -127,7 +127,7 @@ public class State {
     }
 
     public boolean checkVertical(Move move, Mark player) {
-        if (!canFiveInAColumn(move.row)) {
+        if (!canFiveInARow(move.row)) {
             return false;
         }
         for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
@@ -139,7 +139,7 @@ public class State {
     }
 
     public boolean checkDiagonalPrimary(Move move, Mark player) {
-        if (!canFiveInARow(move.col) || !canFiveInAColumn(move.row)) {
+        if (!canFiveInARow(move.col) || !canFiveInARow(move.row)) {
             return false;
         }
         for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
@@ -162,11 +162,7 @@ public class State {
         return true;
     }
 
-    public boolean canFiveInARow(int col) {
-        return col + Rule.WIN_REQUIRED <= Rule.SIZE;
-    }
-
-    public boolean canFiveInAColumn(int row) {
-        return row + Rule.WIN_REQUIRED <= Rule.SIZE;
+    public boolean canFiveInARow(int index) {
+        return index + Rule.WIN_REQUIRED <= Rule.SIZE;
     }
 }
