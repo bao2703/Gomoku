@@ -9,6 +9,7 @@ import java.util.HashMap;
 public class AlphaBeta {
 
     private HashMap<Integer, State> mapAlphaBeta = new HashMap<>();
+    private Evaluation evaluation = new Evaluation();
 
     public State exec(State currentState, int depth) {
         mapAlphaBeta.clear();
@@ -19,7 +20,7 @@ public class AlphaBeta {
     private int exec(State currentState, int alpha, int beta, int depth) {
         ArrayList<State> successors = currentState.getSuccessors();
         if (successors.isEmpty() || depth == 0) {
-            int heuristic = Evaluation.computeHeuristic(currentState);
+            int heuristic = evaluation.computeHeuristic(currentState);
             mapAlphaBeta.put(heuristic, currentState);
             return heuristic;
         }

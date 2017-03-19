@@ -81,13 +81,13 @@ public class GomokuFrame extends JFrame {
         }
 
         public void makeMove() {
-            gomoku.performMove(row, col);
             changeIcon();
+            gomoku.performMove(row, col);
         }
 
         private void changeIcon() {
             active = false;
-            if (gomoku.state.getCurrentPlayer() == Mark.X) {
+            if (gomoku.state.getCurrentPlayer() == Mark.O) {
                 this.setText("O");
                 this.setForeground(Color.red);
             } else {
