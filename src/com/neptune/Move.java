@@ -24,7 +24,6 @@ public class Move {
     @Override
     public boolean equals(Object obj) {
         if (obj == null) return false;
-        if (this == null) return false;
         if (getClass() != obj.getClass()) return false;
         Move other = (Move) obj;
         if (this.row != other.row) return false;

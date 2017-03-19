@@ -8,7 +8,7 @@ import java.util.HashMap;
  */
 public class AlphaBeta {
 
-    HashMap<Integer, State> mapAlphaBeta = new HashMap<>();
+    private HashMap<Integer, State> mapAlphaBeta = new HashMap<>();
 
     public State exec(State currentState, int depth) {
         mapAlphaBeta.clear();

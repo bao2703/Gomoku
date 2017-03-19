@@ -21,8 +21,8 @@ public class Evaluation {
 
     public static int computeHeuristic(State state) {
         int heuristic = 0;
-        int x = 0;
-        int o = 0;
+        int x;
+        int o;
         for (int row = 0; row < Rule.SIZE; row++) {
             for (int col = 0; col < Rule.SIZE - Rule.WIN_REQUIRED; col++) {
                 x = 0;

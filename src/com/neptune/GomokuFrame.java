@@ -2,15 +2,20 @@ package com.neptune;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by Neptune on 3/18/2017.
  */
 public class GomokuFrame extends JFrame {
-    private Gomoku gomoku;
+    private GameState gameState = GameState.ON_GOING;
+    public Gomoku gomoku;
     private MarkButton[][] markButton;
-    GameState gameState = GameState.ON_GOING;
+    private File xFile = new File("X.txt");
+    private File oFile = new File("O.txt");;
 
     public GomokuFrame() {
         gomoku = new Gomoku();
@@ -48,11 +53,21 @@ public class GomokuFrame extends JFrame {
             if (active) {
                 gomoku.performMove(row, col);
                 this.changeIcon();
+                try {
+                    gomoku.writeState(xFile);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
 
                 if (gameState == GameState.ON_GOING) {
                     Move move = gomoku.getBestMove();
                     gomoku.performMove(move.row, move.col);
                     markButton[move.row][move.col].changeIcon();
+                    try {
+                        gomoku.writeState(oFile);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         }
