@@ -33,14 +33,6 @@ class StateTest {
     }
 
     @Test
-    void getSuccessors_in_third_move() {
-        ArrayList<State> successors = state.getSuccessors();
-        successors = successors.get(0).getSuccessors();
-        successors = successors.get(0).getSuccessors();
-        assertEquals(23, successors.size());
-    }
-
-    @Test
     void performMove() {
         state.performMove(5, 5);
         Assertions.assertEquals(state.getPlayer(5, 5), state.board[5][5]);
@@ -60,46 +52,6 @@ class StateTest {
     }
 
     @Test
-    public void checkHorizontal_has_winner() {
-        for (int i = 0; i < 5; i++) {
-            state.board[0][i] = Mark.MAX;
-        }
-
-        boolean actual = state.checkHorizontal(new Move(0, 0), Mark.MAX);
-        assertEquals(true, actual);
-    }
-
-    @Test
-    public void checkVertical_has_winner() {
-        for (int i = 0; i < 5; i++) {
-            state.board[i][0] = Mark.MAX;
-        }
-
-        boolean actual = state.checkVertical(new Move(0, 0), Mark.MAX);
-        assertEquals(true, actual);
-    }
-
-    @Test
-    public void checkDiagonalPrimary_has_winner() {
-        for (int i = 0; i < 5; i++) {
-            state.board[i][i] = Mark.MAX;
-        }
-
-        boolean actual = state.checkDiagonalPrimary(new Move(0, 0), Mark.MAX);
-        assertEquals(true, actual);
-    }
-
-    @Test
-    public void checkDiagonalSub_has_winner() {
-        for (int i = 0; i < 5; i++) {
-            state.board[i][Rule.SIZE - i - 1] = Mark.MAX;
-        }
-
-        boolean actual = state.checkDiagonalSub(new Move(4, 6), Mark.MAX);
-        assertEquals(true, actual);
-    }
-
-    @Test
     public void canFiveInARow() {
         int index = 7;
         for (int i = 0; i < 7; i++) {
@@ -108,5 +60,21 @@ class StateTest {
         for (int i = index; i < Rule.SIZE; i++) {
             assertEquals(false, state.canFiveInARow(i));
         }
+    }
+
+    @Test
+    void getMoveSuccessors() {
+        Rule.RADIUS = 2;
+        state.performMove(Rule.SIZE / 2, Rule.SIZE / 2);
+        assertEquals(24, state.getMoveSuccessors().size());
+
+        state.performMove(5, 4);
+        assertEquals(28, state.getMoveSuccessors().size());
+
+        state.performMove(5, 3);
+        assertEquals(32, state.getMoveSuccessors().size());
+
+        state.performMove(4, 5);
+        assertEquals(36, state.getMoveSuccessors().size());
     }
 }

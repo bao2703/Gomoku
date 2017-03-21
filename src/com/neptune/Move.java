@@ -28,21 +28,24 @@ public class Move {
     }
 
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + col;
+        result = prime * result + row;
+        return result;
+    }
+
+    @Override
     public boolean equals(Object obj) {
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
         Move other = (Move) obj;
-        if (this.row != other.row) return false;
-        if (this.col != other.col) return false;
-        return true;
-    }
-
-    public Move createMoveUp() {
-        return new Move(row - 1, col);
-    }
-
-    public Move createMoveDown() {
-        return new Move(row + Rule.RADIUS, col);
+        return col == other.col && row == other.row;
     }
 
     public boolean isValid() {
@@ -54,12 +57,9 @@ public class Move {
             return null;
         }
         ArrayList<Move> result = new ArrayList<>();
-        int top = row - radius;
-        int bottom = col + radius;
-        for (int i = top; i <= bottom; i++) {
-            for (int j = top; j <= bottom; j++) {
-                if (i == row && j == col) continue;
-                Move move = new Move(i, j);
+        for (int i = -radius; i <= radius; i++) {
+            for (int j = -radius; j <= radius; j++) {
+                Move move = new Move(row + i, col + j);
                 if (move.isValid())
                     result.add(move);
             }

@@ -1,9 +1,6 @@
 package com.neptune;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Created by Neptune on 3/18/2017.
@@ -54,7 +51,7 @@ public class State {
     }
 
     public boolean isValidMove(Move move) {
-        return !(board[move.row][move.col] == Mark.BLANK);
+        return board[move.row][move.col] == Mark.BLANK;
     }
 
     @Override
@@ -85,93 +82,26 @@ public class State {
             state.performMove(center, center);
             result.add(state);
         } else {
-            int top = center - Rule.RADIUS;
-            int bottom = center + Rule.RADIUS;
-            for (int i = top; i <= bottom; i++) {
-                for (int j = top; j <= bottom; j++) {
-                    if (board[i][j] == Mark.BLANK) {
-                        State state = new State(this);
-                        state.performMove(i, j);
-                        result.add(state);
-                    }
-                }
+            for (Map.Entry<Move, Integer> kv : getMoveSuccessors().entrySet()) {
+                State state = new State(this);
+                state.performMove(kv.getKey().row, kv.getKey().col);
+                result.add(state);
             }
         }
         return result;
     }
 
-    public HashMap<Move, Integer> getMoveSucessors() {
+    public HashMap<Move, Integer> getMoveSuccessors() {
         HashMap<Move, Integer> moveMap = new HashMap<>();
         for (Move move : moveHistory) {
-            for (Move generatedMove : move.generateMove(Rule.RADIUS)) {
+            ArrayList<Move> generatedMoves = move.generateMove(Rule.RADIUS);
+            for (Move generatedMove : generatedMoves) {
                 if (isValidMove(generatedMove)) {
                     moveMap.put(generatedMove, 0);
                 }
             }
         }
         return moveMap;
-    }
-
-    public GameState checkState() {
-//        Move lastMove = getLastMove();
-//        Mark currentPlayer = getCurrentPlayer();
-//        if (checkHorizontal(lastMove, currentPlayer) || checkVertical(lastMove, currentPlayer) || checkDiagonalPrimary(lastMove, currentPlayer)
-//                || checkDiagonalSub(lastMove, currentPlayer)) {
-//            return currentPlayer == Mark.MAX ? GameState.X_WIN : GameState.O_WIN;
-//        }
-
-        if (moveHistory.size() == Math.pow(Rule.SIZE, 2)) {
-            return GameState.DRAW;
-        }
-        return GameState.ON_GOING;
-    }
-
-    public boolean checkHorizontal(Move move, Mark player) {
-        if (!canFiveInARow(move.col)) {
-            return false;
-        }
-        for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
-            if (board[move.row][move.col + i] != player) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean checkVertical(Move move, Mark player) {
-        if (!canFiveInARow(move.row)) {
-            return false;
-        }
-        for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
-            if (board[move.row + i][move.col] != player) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean checkDiagonalPrimary(Move move, Mark player) {
-        if (!canFiveInARow(move.col) || !canFiveInARow(move.row)) {
-            return false;
-        }
-        for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
-            if (board[move.row + i][move.col + i] != player) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean checkDiagonalSub(Move move, Mark player) {
-        if (move.row < Rule.WIN_REQUIRED - 1 || !canFiveInARow(move.col)) {
-            return false;
-        }
-        for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
-            if (board[move.row - i][move.col + i] != player) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public boolean canFiveInARow(int index) {
