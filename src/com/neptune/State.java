@@ -2,6 +2,7 @@ package com.neptune;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Stack;
 
 /**
@@ -52,6 +53,10 @@ public class State {
         return moveHistory.peek();
     }
 
+    public boolean isValidMove(Move move) {
+        return !(board[move.row][move.col] == Mark.BLANK);
+    }
+
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
@@ -80,10 +85,6 @@ public class State {
             state.performMove(center, center);
             result.add(state);
         } else {
-            if (moveHistory.size() == 8)
-                Rule.RADIUS = 4;
-            else if (moveHistory.size() == 11)
-                Rule.RADIUS = 5;
             int top = center - Rule.RADIUS;
             int bottom = center + Rule.RADIUS;
             for (int i = top; i <= bottom; i++) {
@@ -96,8 +97,19 @@ public class State {
                 }
             }
         }
-
         return result;
+    }
+
+    public HashMap<Move, Integer> getMoveSucessors() {
+        HashMap<Move, Integer> moveMap = new HashMap<>();
+        for (Move move : moveHistory) {
+            for (Move generatedMove : move.generateMove(Rule.RADIUS)) {
+                if (isValidMove(generatedMove)) {
+                    moveMap.put(generatedMove, 0);
+                }
+            }
+        }
+        return moveMap;
     }
 
     public GameState checkState() {

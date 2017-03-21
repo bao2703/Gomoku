@@ -29,8 +29,8 @@ public class GomokuFrame extends JFrame {
             oFile.delete();
         }
 
-        Move move = gomoku.getBestMove();
-        markButton[move.row][move.col].makeMove();
+//        Move move = gomoku.getBestMove();
+//        markButton[move.row][move.col].makeMove();
     }
 
     private void initComponents() {
