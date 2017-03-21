@@ -87,7 +87,7 @@ public class GomokuFrame extends JFrame {
 
         private void changeIcon() {
             active = false;
-            if (gomoku.state.getCurrentPlayer() == Mark.O) {
+            if (gomoku.state.getCurrentPlayer() == Mark.MIN) {
                 this.setText("O");
                 this.setForeground(Color.red);
             } else {

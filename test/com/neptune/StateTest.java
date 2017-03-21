@@ -49,53 +49,53 @@ class StateTest {
     @Test
     void getCurrentPlayer_O_first() {
         Mark actual = state.getCurrentPlayer();
-        assertEquals(Mark.O, actual);
+        assertEquals(Mark.MIN, actual);
     }
 
     @Test
     void getCurrentPlayer_O_first_X_seccond() {
         state.performMove(0, 0);
         Mark actual = state.getCurrentPlayer();
-        assertEquals(Mark.X, actual);
+        assertEquals(Mark.MAX, actual);
     }
 
     @Test
     public void checkHorizontal_has_winner() {
         for (int i = 0; i < 5; i++) {
-            state.board[0][i] = Mark.X;
+            state.board[0][i] = Mark.MAX;
         }
 
-        boolean actual = state.checkHorizontal(new Move(0, 0), Mark.X);
+        boolean actual = state.checkHorizontal(new Move(0, 0), Mark.MAX);
         assertEquals(true, actual);
     }
 
     @Test
     public void checkVertical_has_winner() {
         for (int i = 0; i < 5; i++) {
-            state.board[i][0] = Mark.X;
+            state.board[i][0] = Mark.MAX;
         }
 
-        boolean actual = state.checkVertical(new Move(0, 0), Mark.X);
+        boolean actual = state.checkVertical(new Move(0, 0), Mark.MAX);
         assertEquals(true, actual);
     }
 
     @Test
     public void checkDiagonalPrimary_has_winner() {
         for (int i = 0; i < 5; i++) {
-            state.board[i][i] = Mark.X;
+            state.board[i][i] = Mark.MAX;
         }
 
-        boolean actual = state.checkDiagonalPrimary(new Move(0, 0), Mark.X);
+        boolean actual = state.checkDiagonalPrimary(new Move(0, 0), Mark.MAX);
         assertEquals(true, actual);
     }
 
     @Test
     public void checkDiagonalSub_has_winner() {
         for (int i = 0; i < 5; i++) {
-            state.board[i][Rule.SIZE - i - 1] = Mark.X;
+            state.board[i][Rule.SIZE - i - 1] = Mark.MAX;
         }
 
-        boolean actual = state.checkDiagonalSub(new Move(4, 6), Mark.X);
+        boolean actual = state.checkDiagonalSub(new Move(4, 6), Mark.MAX);
         assertEquals(true, actual);
     }
 

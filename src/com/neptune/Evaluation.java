@@ -32,72 +32,72 @@ public class Evaluation {
     public int computeHorizontal(State state, int currentRow, int currentCol) {
         if (!state.canFiveInARow(currentCol))
             return 0;
-        Count count = new Count();
+        Counter counter = new Counter();
         for (int i = 0; i < Rule.WIN_REQUIRED; i++) {
-            count.exec(state.board[currentRow][currentCol + i]);
+            counter.exec(state.board[currentRow][currentCol + i]);
         }
-        return count.getHeuristic();
+        return counter.getHeuristic();
     }
 
     public int computeVertical(State state, int currentRow, int currentCol) {
         if (!state.canFiveInARow(currentRow))
             return 0;
-        Count count = new Count();
+        Counter counter = new Counter();
         for (int i = 0; i < Rule.WIN_REQUIRED; i++) {
-            count.exec(state.board[currentRow + i][currentCol]);
+            counter.exec(state.board[currentRow + i][currentCol]);
         }
-        return count.getHeuristic();
+        return counter.getHeuristic();
     }
 
     public int computeDiagonalPrimary(State state, int currentRow, int currentCol) {
         if (!state.canFiveInARow(currentCol) || !state.canFiveInARow(currentRow)) {
             return 0;
         }
-        Count count = new Count();
+        Counter counter = new Counter();
         for (int i = 0; i < Rule.WIN_REQUIRED; i++) {
-            count.exec(state.board[currentRow + i][currentCol + i]);
+            counter.exec(state.board[currentRow + i][currentCol + i]);
         }
-        return count.getHeuristic();
+        return counter.getHeuristic();
     }
 
     public int computeDiagonalSub(State state, int currentRow, int currentCol) {
         if (currentRow < Rule.WIN_REQUIRED - 1 || !state.canFiveInARow(currentCol)) {
             return 0;
         }
-        Count count = new Count();
+        Counter counter = new Counter();
         for (int i = 0; i < Rule.WIN_REQUIRED; i++) {
-            count.exec(state.board[currentRow - i][currentCol + i]);
+            counter.exec(state.board[currentRow - i][currentCol + i]);
         }
-        return count.getHeuristic();
+        return counter.getHeuristic();
     }
 
-    private class Count {
-        private int o;
-        private int x;
+    private class Counter {
+        private int min;
+        private int max;
 
-        public Count() {
+        public Counter() {
             this(0, 0);
         }
 
-        public Count(int o, int x) {
-            this.o = o;
-            this.x = x;
+        public Counter(int o, int x) {
+            this.min = o;
+            this.max = x;
         }
 
         public void exec(Mark mark) {
-            if (mark == Mark.O) {
-                o = o + 1;
+            if (mark == Mark.MIN) {
+                min = min + 1;
             }
-            if (mark == Mark.X) {
-                x = x + 1;
+            if (mark == Mark.MAX) {
+                max = max + 1;
             }
         }
 
         public int getHeuristic() {
             int heuristic = 0;
-            if (x * o == 0 && x != o) {
-                heuristic -= simpleDef(o);
-                heuristic += simpleDef(x);
+            if (max * min == 0 && max != min) {
+                heuristic -= simpleDef(min);
+                heuristic += simpleDef(max);
             }
             return heuristic;
         }

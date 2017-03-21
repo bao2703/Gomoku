@@ -25,10 +25,14 @@ public class AlphaBeta {
         }
         ArrayList<State> successors = currentState.getSuccessors();
         int bestValue;
-        if (currentState.getCurrentPlayer() == Mark.X) {
+        if (currentState.getCurrentPlayer() == Mark.MAX) {
             bestValue = alpha;
             for (State successor : successors) {
-                bestValue = Math.max(bestValue, exec(successor, bestValue, beta, depth - 1));
+                int childValue = exec(successor, bestValue, beta, depth - 1);
+                if (childValue > bestValue) {
+                    bestValue = childValue;
+                }
+                //bestValue = Math.max(bestValue, exec(successor, bestValue, beta, depth - 1));
                 if (bestValue >= beta) {
                     break;
                 }
@@ -36,7 +40,11 @@ public class AlphaBeta {
         } else {
             bestValue = beta;
             for (State successor : successors) {
-                bestValue = Math.min(bestValue, exec(successor, alpha, bestValue, depth - 1));
+                int childValue = exec(successor, alpha, bestValue, depth - 1);
+                if (childValue < bestValue) {
+                    bestValue = childValue;
+                }
+                //bestValue = Math.min(bestValue, exec(successor, alpha, bestValue, depth - 1));
                 if (bestValue <= alpha) {
                     break;
                 }

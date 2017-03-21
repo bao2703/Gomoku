@@ -33,14 +33,14 @@ public class State {
     }
 
     public Mark getCurrentPlayer() {
-        return moveHistory.size() % 2 == 0 ? Mark.O : Mark.X;
+        return moveHistory.size() % 2 == 0 ? Mark.MIN : Mark.MAX;
     }
 
     public Mark getPlayer(int row, int col) {
         Move move = new Move(row, col);
         for (int i = 0; i < moveHistory.size(); i++) {
             if (moveHistory.get(i).equals(move)) {
-                return i % 2 == 0 ? Mark.O : Mark.X;
+                return i % 2 == 0 ? Mark.MIN : Mark.MAX;
             }
         }
         return null;
@@ -59,7 +59,7 @@ public class State {
             for (int j = 0; j < Rule.SIZE; j++) {
                 if (board[i][j] == Mark.BLANK) {
                     output.append("[ ]");
-                } else if (board[i][j] == Mark.X) {
+                } else if (board[i][j] == Mark.MAX) {
                     output.append("[X]");
                 } else {
                     output.append("[O]");
@@ -101,12 +101,12 @@ public class State {
     }
 
     public GameState checkState() {
-        Move lastMove = getLastMove();
-        Mark currentPlayer = getCurrentPlayer();
-        if (checkHorizontal(lastMove, currentPlayer) || checkVertical(lastMove, currentPlayer) || checkDiagonalPrimary(lastMove, currentPlayer)
-                || checkDiagonalSub(lastMove, currentPlayer)) {
-            return currentPlayer == Mark.X ? GameState.X_WIN : GameState.O_WIN;
-        }
+//        Move lastMove = getLastMove();
+//        Mark currentPlayer = getCurrentPlayer();
+//        if (checkHorizontal(lastMove, currentPlayer) || checkVertical(lastMove, currentPlayer) || checkDiagonalPrimary(lastMove, currentPlayer)
+//                || checkDiagonalSub(lastMove, currentPlayer)) {
+//            return currentPlayer == Mark.MAX ? GameState.X_WIN : GameState.O_WIN;
+//        }
 
         if (moveHistory.size() == Math.pow(Rule.SIZE, 2)) {
             return GameState.DRAW;

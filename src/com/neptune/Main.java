@@ -7,9 +7,9 @@ public class Main {
     public static void main(String[] args) {
 //        Scanner scanner = new Scanner(System.in);
 //        int in = scanner.nextInt();
-//        Mark firstPlayer = Mark.O;
+//        Mark firstPlayer = Mark.MIN;
 //        if (in == 1) {
-//            firstPlayer = Mark.X;
+//            firstPlayer = Mark.MAX;
 //        }
         GomokuFrame gomokuFrame = new GomokuFrame();
         gomokuFrame.setResizable(false);
