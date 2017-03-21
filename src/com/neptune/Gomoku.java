@@ -21,7 +21,7 @@ public class Gomoku {
 
     public Move getBestMove() {
         AlphaBeta alphaBeta = new AlphaBeta();
-        return alphaBeta.exec(state, Rule.MAX_DEPTH).getLastMove();
+        return alphaBeta.exec(state, Rule.MAX_DEPTH);
     }
 
     public void writeState(File file) throws IOException {

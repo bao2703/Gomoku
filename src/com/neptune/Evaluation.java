@@ -4,18 +4,6 @@ package com.neptune;
  * Created by Neptune on 3/18/2017.
  */
 public class Evaluation {
-    private int simpleDef(int num) {
-        int result = simple(num);
-        if (num == 4) {
-            return result * 2;
-        }
-        return result;
-    }
-
-    private int simple(int num) {
-        return (int) Math.pow(4, num);
-    }
-
     public int computeHeuristic(State state) {
         int heuristic = 0;
         for (int row = 0; row < Rule.SIZE; row++) {
@@ -96,10 +84,20 @@ public class Evaluation {
         public int getHeuristic() {
             int heuristic = 0;
             if (max * min == 0 && max != min) {
-                heuristic -= simpleDef(min);
-                heuristic += simpleDef(max);
+                if (min == 3 || min == 4) heuristic -= simpleDef(min);
+                else if (min == 5) heuristic -= Integer.MIN_VALUE;
+                else heuristic -= simple(min);
+                heuristic += simple(max);
             }
             return heuristic;
+        }
+
+        private int simpleDef(int num) {
+            return simple(num) * 2;
+        }
+
+        private int simple(int num) {
+            return (int) Math.pow(4, num);
         }
     }
 }
