@@ -4,30 +4,25 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * Created by Neptune on 3/18/2017.
  */
 public class GomokuFrame extends JFrame {
-    public Gomoku gomoku;
+    public State state;
     private GameState gameState = GameState.ON_GOING;
     private MarkButton[][] markButton;
     private boolean playerTurn = true;
-    //private File xFile = new File("X.txt");
-    //private File oFile = new File("O.txt");
+    private AlphaBeta alphaBeta = new AlphaBeta();
 
     public GomokuFrame() {
-        gomoku = new Gomoku();
+        state = new State();
         markButton = new MarkButton[Rule.SIZE][Rule.SIZE];
         initComponents();
-
-//        if (xFile.exists()) {
-//            xFile.delete();
-//        }
-//        if (oFile.exists()) {
-//            oFile.delete();
-//        }
-
 //        Move move = gomoku.getBestMove();
 //        markButton[move.row][move.col].makeMove();
     }
@@ -51,10 +46,18 @@ public class GomokuFrame extends JFrame {
 
     public void aiTurn() {
         if (gameState == GameState.ON_GOING) {
-            Move move = gomoku.getBestMove();
+            Move move = alphaBeta.exec(state, Rule.MAX_DEPTH);
             markButton[move.row][move.col].makeMove();
             playerTurn = true;
         }
+    }
+
+    public void writeState(File file) throws IOException {
+        BufferedWriter bufferedWriter;
+        bufferedWriter = new BufferedWriter(new FileWriter(file, true));
+        bufferedWriter.write(state.getLastMove().toString());
+        bufferedWriter.newLine();
+        bufferedWriter.close();
     }
 
     private class MarkButton extends JButton implements ActionListener {
@@ -72,7 +75,7 @@ public class GomokuFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (active && playerTurn) {
-                Move aiMove = gomoku.state.getLastMove();
+                Move aiMove = state.getLastMove();
                 if (aiMove != null) {
                     markButton[aiMove.row][aiMove.col].setForeground(Color.blue);
                 }
@@ -84,12 +87,12 @@ public class GomokuFrame extends JFrame {
 
         public void makeMove() {
             changeIcon();
-            gomoku.performMove(row, col);
+            state.performMove(row, col);
         }
 
         private void changeIcon() {
             active = false;
-            if (gomoku.state.getCurrentPlayer() == Mark.MIN) {
+            if (state.getCurrentPlayer() == Mark.MIN) {
                 this.setText("O");
                 this.setForeground(Color.red);
             } else {
