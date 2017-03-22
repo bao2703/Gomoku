@@ -62,4 +62,15 @@ class StateTest {
         state.performMove(4, 5);
         assertEquals(36, state.getMoveSuccessors().size());
     }
+
+    @Test
+    void a() {
+        state.board[0][1] = Mark.MAX;
+        state.board[0][2] = Mark.MAX;
+        state.board[0][3] = Mark.MAX;
+        state.board[0][4] = Mark.MAX;
+        state.board[0][5] = Mark.MAX;
+
+        assertEquals(true, state.a(new Move(0, 1), Mark.MAX));
+    }
 }

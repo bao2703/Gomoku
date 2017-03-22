@@ -12,6 +12,7 @@ public class GomokuFrame extends JFrame {
     public Gomoku gomoku;
     private GameState gameState = GameState.ON_GOING;
     private MarkButton[][] markButton;
+    private boolean playerTurn = true;
     //private File xFile = new File("X.txt");
     //private File oFile = new File("O.txt");
 
@@ -44,6 +45,18 @@ public class GomokuFrame extends JFrame {
         }
     }
 
+    public void setPlayerTurn(boolean playerTurn) {
+        this.playerTurn = playerTurn;
+    }
+
+    public void aiTurn() {
+        if (gameState == GameState.ON_GOING) {
+            Move move = gomoku.getBestMove();
+            markButton[move.row][move.col].makeMove();
+            playerTurn = true;
+        }
+    }
+
     private class MarkButton extends JButton implements ActionListener {
         private boolean active;
         private int row;
@@ -58,27 +71,14 @@ public class GomokuFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (active) {
+            if (active && playerTurn) {
                 Move aiMove = gomoku.state.getLastMove();
                 if (aiMove != null) {
                     markButton[aiMove.row][aiMove.col].setForeground(Color.blue);
                 }
                 this.makeMove();
-//                try {
-//                    gomoku.writeState(oFile);
-//                } catch (IOException ex) {
-//                    ex.printStackTrace();
-//                }
-
-                if (gameState == GameState.ON_GOING) {
-                    Move move = gomoku.getBestMove();
-                    markButton[move.row][move.col].makeMove();
-//                    try {
-//                        gomoku.writeState(xFile);
-//                    } catch (IOException ex) {
-//                        ex.printStackTrace();
-//                    }
-                }
+                IterativeDeepeningThread iterativeDeepeningThread = new IterativeDeepeningThread(GomokuFrame.this, 0);
+                iterativeDeepeningThread.start();
             }
         }
 

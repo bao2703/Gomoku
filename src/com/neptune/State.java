@@ -102,4 +102,21 @@ public class State {
     public boolean canFiveInARow(int index) {
         return index + Rule.WIN_REQUIRED <= Rule.SIZE;
     }
+
+    public GameState checkState() {
+        if (moveHistory.size() == Math.pow(Rule.SIZE, 2)) return GameState.DRAW;
+        return GameState.ON_GOING;
+    }
+
+    public boolean a(Move move, Mark player) {
+        for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
+            if (board[move.row][move.col + i] != player)
+                return false;
+        }
+        for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
+            if (board[move.row][move.col - i] != player)
+                return false;
+        }
+        return true;
+    }
 }

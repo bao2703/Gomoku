@@ -86,7 +86,8 @@ public class Evaluation {
             if (max * min == 0 && max != min) {
                 if (min >= 3) heuristic -= simpleDef(min);
                 else heuristic -= simple(min);
-                heuristic += simple(max);
+                if (max >= 4) heuristic += simpleDef(min);
+                else heuristic += simple(max);
             }
             return heuristic;
         }
