@@ -20,19 +20,6 @@ class StateTest {
     }
 
     @Test
-    void getSuccessors_1_in_first_move() {
-        ArrayList<State> successors = state.getSuccessors();
-        assertEquals(1, successors.size());
-    }
-
-    @Test
-    void getSuccessors_24_in_second_move() {
-        ArrayList<State> successors = state.getSuccessors();
-        successors = successors.get(0).getSuccessors();
-        assertEquals(24, successors.size());
-    }
-
-    @Test
     void performMove() {
         state.performMove(5, 5);
         Assertions.assertEquals(state.getPlayer(5, 5), state.board[5][5]);
@@ -65,7 +52,7 @@ class StateTest {
     @Test
     void getMoveSuccessors() {
         Rule.RADIUS = 2;
-        state.performMove(Rule.SIZE / 2, Rule.SIZE / 2);
+        state.performMove(5, 5);
         assertEquals(24, state.getMoveSuccessors().size());
 
         state.performMove(5, 4);

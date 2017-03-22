@@ -84,8 +84,7 @@ public class Evaluation {
         public int getHeuristic() {
             int heuristic = 0;
             if (max * min == 0 && max != min) {
-                if (min == 3 || min == 4) heuristic -= simpleDef(min);
-                else if (min == 5) heuristic -= Integer.MIN_VALUE;
+                if (min >= 3) heuristic -= simpleDef(min);
                 else heuristic -= simple(min);
                 heuristic += simple(max);
             }

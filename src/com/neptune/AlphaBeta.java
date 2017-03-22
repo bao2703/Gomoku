@@ -2,6 +2,7 @@ package com.neptune;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Neptune on 3/18/2017.
@@ -24,29 +25,36 @@ public class AlphaBeta {
         if (depth == 0) {
             return evaluation.computeHeuristic(currentState);
         }
-        ArrayList<State> successors = currentState.getSuccessors();
+        //ArrayList<State> successors = currentState.getSuccessors();
+        HashMap<Move, Integer> mapMoveSuccessors = currentState.getMoveSuccessors();
         trackingMove.add(new HashMap<>());
         int bestValue;
         if (currentState.getCurrentPlayer() == Mark.MAX) {
             bestValue = alpha;
-            for (State successor : successors) {
-                int childValue = exec(successor, bestValue, beta, depth - 1);
+            for (Map.Entry<Move, Integer> kv : mapMoveSuccessors.entrySet()) {
+                Move move = kv.getKey();
+                currentState.performMove(move.row, move.col);
+                int childValue = exec(currentState, bestValue, beta, depth - 1);
                 if (childValue > bestValue) {
                     bestValue = childValue;
-                    trackingMove.get(depth - 1).put(bestValue, successor.getLastMove());
+                    trackingMove.get(depth - 1).put(bestValue, move);
                 }
+                currentState.undoLastMove();
                 if (bestValue >= beta) {
                     break;
                 }
             }
         } else {
             bestValue = beta;
-            for (State successor : successors) {
-                int childValue = exec(successor, alpha, bestValue, depth - 1);
+            for (Map.Entry<Move, Integer> kv : mapMoveSuccessors.entrySet()) {
+                Move move = kv.getKey();
+                currentState.performMove(move.row, move.col);
+                int childValue = exec(currentState, alpha, bestValue, depth - 1);
                 if (childValue < bestValue) {
                     bestValue = childValue;
-                    trackingMove.get(depth - 1).put(bestValue, successor.getLastMove());
+                    trackingMove.get(depth - 1).put(bestValue, move);
                 }
+                currentState.undoLastMove();
                 if (bestValue <= alpha) {
                     break;
                 }

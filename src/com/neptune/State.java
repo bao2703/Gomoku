@@ -50,6 +50,11 @@ public class State {
         return moveHistory.peek();
     }
 
+    public void undoLastMove() {
+        Move move = moveHistory.pop();
+        board[move.row][move.col] = Mark.BLANK;
+    }
+
     public boolean isValidMove(Move move) {
         return board[move.row][move.col] == Mark.BLANK;
     }
@@ -72,23 +77,6 @@ public class State {
             output.append("\n");
         }
         return output.toString();
-    }
-
-    public ArrayList<State> getSuccessors() {
-        ArrayList<State> result = new ArrayList<>();
-        int center = Rule.SIZE / 2;
-        if (moveHistory.isEmpty()) {
-            State state = new State();
-            state.performMove(center, center);
-            result.add(state);
-        } else {
-            for (Map.Entry<Move, Integer> kv : getMoveSuccessors().entrySet()) {
-                State state = new State(this);
-                state.performMove(kv.getKey().row, kv.getKey().col);
-                result.add(state);
-            }
-        }
-        return result;
     }
 
     public HashMap<Move, Integer> getMoveSuccessors() {
