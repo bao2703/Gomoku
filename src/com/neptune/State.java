@@ -20,13 +20,6 @@ public class State {
         moveHistory = new Stack<>();
     }
 
-    public State(final State state) {
-        this();
-        for (Move move : state.moveHistory) {
-            performMove(move.row, move.col);
-        }
-    }
-
     public void performMove(int row, int col) {
         if (board[row][col] != Mark.BLANK) return;
         board[row][col] = getCurrentPlayer();
@@ -105,18 +98,83 @@ public class State {
 
     public GameState checkState() {
         if (moveHistory.size() == Math.pow(Rule.SIZE, 2)) return GameState.DRAW;
+        Move lastMove = getLastMove();
+        Mark currentPlayer = getCurrentPlayer();
+        if (hasHorizontalWin(lastMove, currentPlayer) || hasVerticalWin(lastMove, currentPlayer) || hasDiagonalPrimaryWin(lastMove, currentPlayer) || hasDiagonalSubWin(lastMove, currentPlayer)) {
+            return currentPlayer == Mark.MAX ? GameState.MAX_WIN : GameState.MIN_WIN;
+        }
         return GameState.ON_GOING;
     }
 
-    public boolean a(Move move, Mark player) {
+    public boolean hasHorizontalWin(Move move, Mark player) {
+        int count = 1;
         for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
-            if (board[move.row][move.col + i] != player)
-                return false;
+            if (isOutOfRange(move.col + i)) break;
+            if (board[move.row][move.col + i] == player)
+                count = count + 1;
+            else break;
         }
         for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
-            if (board[move.row][move.col - i] != player)
-                return false;
+            if (isOutOfRange(move.col - i)) break;
+            if (board[move.row][move.col - i] == player)
+                count = count + 1;
+            else break;
         }
-        return true;
+        return count == Rule.WIN_REQUIRED;
+    }
+
+    public boolean hasVerticalWin(Move move, Mark player) {
+        int count = 1;
+        for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
+            if (isOutOfRange(move.row + i)) break;
+            if (board[move.row + i][move.col] == player)
+                count = count + 1;
+            else break;
+        }
+        for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
+            if (isOutOfRange(move.row - i)) break;
+            if (board[move.row - i][move.col] == player)
+                count = count + 1;
+            else break;
+        }
+        return count == Rule.WIN_REQUIRED;
+    }
+
+    public boolean hasDiagonalPrimaryWin(Move move, Mark player) {
+        int count = 1;
+        for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
+            if (isOutOfRange(move.row + i) || isOutOfRange(move.col + i)) break;
+            if (board[move.row + i][move.col + i] == player)
+                count = count + 1;
+            else break;
+        }
+        for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
+            if (isOutOfRange(move.row - i) || isOutOfRange(move.col - i)) break;
+            if (board[move.row - i][move.col - i] == player)
+                count = count + 1;
+            else break;
+        }
+        return count == Rule.WIN_REQUIRED;
+    }
+
+    public boolean hasDiagonalSubWin(Move move, Mark player) {
+        int count = 1;
+        for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
+            if (isOutOfRange(move.row + i) || isOutOfRange(move.col - i)) break;
+            if (board[move.row + i][move.col - i] == player)
+                count = count + 1;
+            else break;
+        }
+        for (int i = 1; i < Rule.WIN_REQUIRED; i++) {
+            if (isOutOfRange(move.row - i) || isOutOfRange(move.col + i)) break;
+            if (board[move.row - i][move.col + i] == player)
+                count = count + 1;
+            else break;
+        }
+        return count == Rule.WIN_REQUIRED;
+    }
+
+    public boolean isOutOfRange(int i) {
+        return i < 0 || i >= Rule.SIZE;
     }
 }

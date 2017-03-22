@@ -16,7 +16,7 @@ public class AlphaBeta {
     }
 
     public Move exec(State currentState, int depth) {
-        int value = exec(currentState, Integer.MIN_VALUE, Integer.MAX_VALUE, depth);
+        exec(currentState, Integer.MIN_VALUE, Integer.MAX_VALUE, depth);
         return trackingMove.get(Rule.MAX_DEPTH);
     }
 
@@ -24,7 +24,6 @@ public class AlphaBeta {
         if (depth == 0) {
             return evaluation.computeHeuristic(currentState);
         }
-        //ArrayList<State> successors = currentState.getSuccessors();
         HashMap<Move, Integer> mapMoveSuccessors = currentState.getMoveSuccessors();
         int bestValue;
         if (currentState.getCurrentPlayer() == Mark.MAX) {
