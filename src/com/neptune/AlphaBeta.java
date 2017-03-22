@@ -9,16 +9,16 @@ import java.util.Map;
  */
 public class AlphaBeta {
     private Evaluation evaluation;
-    private ArrayList<HashMap<Integer, Move>> trackingMove;
+    private HashMap<Integer, Move> trackingMove;
 
     public AlphaBeta() {
         evaluation = new Evaluation();
-        trackingMove = new ArrayList<>();
+        trackingMove = new HashMap<>();
     }
 
     public Move exec(State currentState, int depth) {
         int value = exec(currentState, Integer.MIN_VALUE, Integer.MAX_VALUE, depth);
-        return trackingMove.get(Rule.MAX_DEPTH - 1).get(value);
+        return trackingMove.get(Rule.MAX_DEPTH);
     }
 
     private int exec(State currentState, int alpha, int beta, int depth) {
@@ -27,7 +27,6 @@ public class AlphaBeta {
         }
         //ArrayList<State> successors = currentState.getSuccessors();
         HashMap<Move, Integer> mapMoveSuccessors = currentState.getMoveSuccessors();
-        trackingMove.add(new HashMap<>());
         int bestValue;
         if (currentState.getCurrentPlayer() == Mark.MAX) {
             bestValue = alpha;
@@ -37,7 +36,7 @@ public class AlphaBeta {
                 int childValue = exec(currentState, bestValue, beta, depth - 1);
                 if (childValue > bestValue) {
                     bestValue = childValue;
-                    trackingMove.get(depth - 1).put(bestValue, move);
+                    trackingMove.put(depth, move);
                 }
                 currentState.undoLastMove();
                 if (bestValue >= beta) {
@@ -52,7 +51,7 @@ public class AlphaBeta {
                 int childValue = exec(currentState, alpha, bestValue, depth - 1);
                 if (childValue < bestValue) {
                     bestValue = childValue;
-                    trackingMove.get(depth - 1).put(bestValue, move);
+                    trackingMove.put(depth, move);
                 }
                 currentState.undoLastMove();
                 if (bestValue <= alpha) {

@@ -27,8 +27,8 @@ public class GomokuFrame extends JFrame {
 //            oFile.delete();
 //        }
 
-        Move move = gomoku.getBestMove();
-        markButton[move.row][move.col].makeMove();
+//        Move move = gomoku.getBestMove();
+//        markButton[move.row][move.col].makeMove();
     }
 
     private void initComponents() {
@@ -59,6 +59,10 @@ public class GomokuFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (active) {
+                Move aiMove = gomoku.state.getLastMove();
+                if (aiMove != null) {
+                    markButton[aiMove.row][aiMove.col].setForeground(Color.blue);
+                }
                 this.makeMove();
 //                try {
 //                    gomoku.writeState(oFile);
@@ -90,7 +94,7 @@ public class GomokuFrame extends JFrame {
                 this.setForeground(Color.red);
             } else {
                 this.setText("X");
-                this.setForeground(Color.blue);
+                this.setForeground(Color.magenta);
             }
         }
     }
