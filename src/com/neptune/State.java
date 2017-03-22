@@ -1,6 +1,9 @@
 package com.neptune;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Stack;
 
 /**
  * Created by Neptune on 3/18/2017.
@@ -81,6 +84,10 @@ public class State {
 
     public HashMap<Move, Integer> getMoveSuccessors() {
         HashMap<Move, Integer> moveMap = new HashMap<>();
+        if (moveHistory.isEmpty()) {
+            moveMap.put(new Move(5, 5), 0);
+            return moveMap;
+        }
         for (Move move : moveHistory) {
             ArrayList<Move> generatedMoves = move.generateMove(Rule.RADIUS);
             for (Move generatedMove : generatedMoves) {
