@@ -18,7 +18,7 @@ public class AlphaBeta {
 
     public Move exec(State currentState, int depth) {
         int value = exec(currentState, Integer.MIN_VALUE, Integer.MAX_VALUE, depth);
-        return trackingMove.get(0).get(value);
+        return trackingMove.get(Rule.MAX_DEPTH - 1).get(value);
     }
 
     private int exec(State currentState, int alpha, int beta, int depth) {
