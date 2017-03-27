@@ -21,42 +21,48 @@ public class AlphaBeta {
     }
 
     private int exec(State currentState, int alpha, int beta, int depth) {
-        if (depth == 0) {
-            return evaluation.computeHeuristic(currentState);
-        }
-        HashMap<Move, Integer> mapMoveSuccessors = currentState.getMoveSuccessors();
-        int bestValue;
-        if (currentState.getCurrentPlayer() == Mark.MAX) {
-            bestValue = alpha;
-            for (Map.Entry<Move, Integer> kv : mapMoveSuccessors.entrySet()) {
-                Move move = kv.getKey();
-                currentState.performMove(move.row, move.col);
-                int childValue = exec(currentState, bestValue, beta, depth - 1);
-                if (childValue > bestValue) {
-                    bestValue = childValue;
-                    trackingMove.put(depth, move);
+        GameState gameState = currentState.checkState();
+        if (gameState == GameState.MAX_WIN) return 1000000;
+        else if (gameState == GameState.MIN_WIN) return -1000000;
+        else if (gameState == GameState.DRAW) return 0;
+        else {
+            if (depth == 0) {
+                return evaluation.computeHeuristic(currentState);
+            }
+            HashMap<Move, Integer> mapMoveSuccessors = currentState.getMoveSuccessors();
+            int bestValue;
+            if (currentState.getCurrentPlayer() == Mark.MAX) {
+                bestValue = alpha;
+                for (Map.Entry<Move, Integer> kv : mapMoveSuccessors.entrySet()) {
+                    Move move = kv.getKey();
+                    currentState.performMove(move.row, move.col);
+                    int childValue = exec(currentState, bestValue, beta, depth - 1);
+                    if (childValue > bestValue) {
+                        bestValue = childValue;
+                        trackingMove.put(depth, move);
+                    }
+                    currentState.undoLastMove();
+                    if (bestValue >= beta) {
+                        break;
+                    }
                 }
-                currentState.undoLastMove();
-                if (bestValue >= beta) {
-                    break;
+            } else {
+                bestValue = beta;
+                for (Map.Entry<Move, Integer> kv : mapMoveSuccessors.entrySet()) {
+                    Move move = kv.getKey();
+                    currentState.performMove(move.row, move.col);
+                    int childValue = exec(currentState, alpha, bestValue, depth - 1);
+                    if (childValue < bestValue) {
+                        bestValue = childValue;
+                        trackingMove.put(depth, move);
+                    }
+                    currentState.undoLastMove();
+                    if (bestValue <= alpha) {
+                        break;
+                    }
                 }
             }
-        } else {
-            bestValue = beta;
-            for (Map.Entry<Move, Integer> kv : mapMoveSuccessors.entrySet()) {
-                Move move = kv.getKey();
-                currentState.performMove(move.row, move.col);
-                int childValue = exec(currentState, alpha, bestValue, depth - 1);
-                if (childValue < bestValue) {
-                    bestValue = childValue;
-                    trackingMove.put(depth, move);
-                }
-                currentState.undoLastMove();
-                if (bestValue <= alpha) {
-                    break;
-                }
-            }
+            return bestValue;
         }
-        return bestValue;
     }
 }

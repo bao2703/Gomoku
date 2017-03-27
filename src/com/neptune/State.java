@@ -99,9 +99,9 @@ public class State {
     public GameState checkState() {
         if (moveHistory.size() == Math.pow(Rule.SIZE, 2)) return GameState.DRAW;
         Move lastMove = getLastMove();
-        Mark currentPlayer = getCurrentPlayer();
-        if (hasHorizontalWin(lastMove, currentPlayer) || hasVerticalWin(lastMove, currentPlayer) || hasDiagonalPrimaryWin(lastMove, currentPlayer) || hasDiagonalSubWin(lastMove, currentPlayer)) {
-            return currentPlayer == Mark.MAX ? GameState.MAX_WIN : GameState.MIN_WIN;
+        Mark player = getPlayer(lastMove.row, lastMove.col);
+        if (hasHorizontalWin(lastMove, player) || hasVerticalWin(lastMove, player) || hasDiagonalPrimaryWin(lastMove, player) || hasDiagonalSubWin(lastMove, player)) {
+            return player == Mark.MAX ? GameState.MAX_WIN : GameState.MIN_WIN;
         }
         return GameState.ON_GOING;
     }
