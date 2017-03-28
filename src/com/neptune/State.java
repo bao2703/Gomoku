@@ -11,6 +11,7 @@ import java.util.Stack;
 public class State {
     public Mark[][] board;
     private Stack<Move> moveHistory;
+    private HashMap<Move, Integer> mapMoveSuccessors;
 
     public State() {
         board = new Mark[Rule.SIZE][Rule.SIZE];
@@ -18,12 +19,22 @@ public class State {
             Arrays.fill(marks, Mark.BLANK);
         }
         moveHistory = new Stack<>();
+        mapMoveSuccessors = new HashMap<>();
     }
 
-    public void performMove(int row, int col) {
-        if (board[row][col] != Mark.BLANK) return;
-        board[row][col] = getCurrentPlayer();
-        moveHistory.push(new Move(row, col));
+    public State(State state) {
+        this();
+        for (Move move : state.moveHistory) {
+            performMove(move);
+        }
+    }
+
+    public void performMove(Move move) {
+        if (board[move.row][move.col] != Mark.BLANK) return;
+        board[move.row][move.col] = getCurrentPlayer();
+        moveHistory.push(move);
+        mapMoveSuccessors.remove(move);
+        generateMoveSuccessors();
     }
 
     public Mark getCurrentPlayer() {
@@ -44,11 +55,6 @@ public class State {
         if (moveHistory.isEmpty())
             return null;
         return moveHistory.peek();
-    }
-
-    public void undoLastMove() {
-        Move move = moveHistory.pop();
-        board[move.row][move.col] = Mark.BLANK;
     }
 
     public boolean isValidMove(Move move) {
@@ -75,21 +81,17 @@ public class State {
         return output.toString();
     }
 
-    public HashMap<Move, Integer> getMoveSuccessors() {
-        HashMap<Move, Integer> moveMap = new HashMap<>();
-        if (moveHistory.isEmpty()) {
-            moveMap.put(new Move(5, 5), 0);
-            return moveMap;
-        }
-        for (Move move : moveHistory) {
-            ArrayList<Move> generatedMoves = move.generateMove(Rule.RADIUS);
-            for (Move generatedMove : generatedMoves) {
-                if (isValidMove(generatedMove)) {
-                    moveMap.put(generatedMove, 0);
-                }
+    private void generateMoveSuccessors() {
+        ArrayList<Move> generatedMoves = getLastMove().generateMove(Rule.RADIUS);
+        for (Move generatedMove : generatedMoves) {
+            if (isValidMove(generatedMove)) {
+                mapMoveSuccessors.put(generatedMove, 0);
             }
         }
-        return moveMap;
+    }
+
+    public HashMap<Move, Integer> getMoveSuccessors() {
+        return mapMoveSuccessors;
     }
 
     public boolean canFiveInARow(int index) {

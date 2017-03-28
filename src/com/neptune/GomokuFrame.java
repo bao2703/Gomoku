@@ -34,7 +34,7 @@ public class GomokuFrame extends JFrame {
         for (int i = 0; i < Rule.SIZE; i++) {
             for (int j = 0; j < Rule.SIZE; j++) {
                 markButton[i][j] = new MarkButton(i, j);
-                markButton[i][j].setFont(new Font("Arial", Font.BOLD, 45));
+                markButton[i][j].setFont(new Font("Arial", Font.BOLD, 30));
                 panel.add(markButton[i][j]);
             }
         }
@@ -87,7 +87,7 @@ public class GomokuFrame extends JFrame {
 
         public void makeMove() {
             changeIcon();
-            state.performMove(row, col);
+            state.performMove(new Move(row, col));
         }
 
         private void changeIcon() {

@@ -19,7 +19,7 @@ class StateTest {
 
     @Test
     void performMove() {
-        state.performMove(5, 5);
+        state.performMove(new Move(5, 5));
         Assertions.assertEquals(state.getPlayer(5, 5), state.board[5][5]);
     }
 
@@ -31,7 +31,7 @@ class StateTest {
 
     @Test
     void getCurrentPlayer_O_first_X_seccond() {
-        state.performMove(0, 0);
+        state.performMove(new Move(0, 0));
         Mark actual = state.getCurrentPlayer();
         assertEquals(Mark.MAX, actual);
     }
@@ -50,16 +50,16 @@ class StateTest {
     @Test
     void getMoveSuccessors() {
         Rule.RADIUS = 2;
-        state.performMove(5, 5);
+        state.performMove(new Move(5, 5));
         assertEquals(24, state.getMoveSuccessors().size());
 
-        state.performMove(5, 4);
+        state.performMove(new Move(5, 4));
         assertEquals(28, state.getMoveSuccessors().size());
 
-        state.performMove(5, 3);
+        state.performMove(new Move(5, 3));
         assertEquals(32, state.getMoveSuccessors().size());
 
-        state.performMove(4, 5);
+        state.performMove(new Move(4, 5));
         assertEquals(36, state.getMoveSuccessors().size());
     }
 

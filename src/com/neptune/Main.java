@@ -14,7 +14,7 @@ public class Main {
         GomokuFrame gomokuFrame = new GomokuFrame();
         gomokuFrame.setResizable(false);
         gomokuFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        gomokuFrame.setSize(800, 800);
+        gomokuFrame.setSize(1500, 1500);
         gomokuFrame.setVisible(true);
     }
 }

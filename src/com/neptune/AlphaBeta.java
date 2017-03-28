@@ -29,19 +29,19 @@ public class AlphaBeta {
         if (depth == 0) {
             return evaluation.computeHeuristic(currentState);
         }
-        HashMap<Move, Integer> mapMoveSuccessors = currentState.getMoveSuccessors();
+        HashMap<Move, Integer> mapMoveSuccessors = new HashMap<>(currentState.getMoveSuccessors());
         int bestValue;
         if (currentState.getCurrentPlayer() == Mark.MAX) {
             bestValue = alpha;
             for (Map.Entry<Move, Integer> kv : mapMoveSuccessors.entrySet()) {
                 Move move = kv.getKey();
-                currentState.performMove(move.row, move.col);
-                int childValue = exec(currentState, bestValue, beta, depth - 1);
+                State successorState = new State(currentState);
+                successorState.performMove(move);
+                int childValue = exec(successorState, bestValue, beta, depth - 1);
                 if (childValue > bestValue) {
                     bestValue = childValue;
                     trackingMove.put(depth, move);
                 }
-                currentState.undoLastMove();
                 if (bestValue >= beta) {
                     break;
                 }
@@ -50,19 +50,18 @@ public class AlphaBeta {
             bestValue = beta;
             for (Map.Entry<Move, Integer> kv : mapMoveSuccessors.entrySet()) {
                 Move move = kv.getKey();
-                currentState.performMove(move.row, move.col);
-                int childValue = exec(currentState, alpha, bestValue, depth - 1);
+                State successorState = new State(currentState);
+                successorState.performMove(move);
+                int childValue = exec(successorState, alpha, bestValue, depth - 1);
                 if (childValue < bestValue) {
                     bestValue = childValue;
                     trackingMove.put(depth, move);
                 }
-                currentState.undoLastMove();
                 if (bestValue <= alpha) {
                     break;
                 }
             }
         }
         return bestValue;
-
     }
 }
