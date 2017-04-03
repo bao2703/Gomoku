@@ -24,10 +24,15 @@ public class State {
     }
 
     public State(State state) {
-        this();
-        for (Move move : state.moveHistory) {
-            performMove(move);
+        board = new Mark[Rule.SIZE][Rule.SIZE];
+        for (int i = 0; i < Rule.SIZE; i++) {
+            System.arraycopy(state.board[i], 0, board[i], 0, Rule.SIZE);
         }
+        moveHistory = new Stack<>();
+        for (Move move : state.moveHistory) {
+            moveHistory.add(new Move(move.row, move.col));
+        }
+        mapMoveSuccessors = new HashMap<>(state.mapMoveSuccessors);
     }
 
     public void performMove(Move move) {
