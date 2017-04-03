@@ -124,7 +124,7 @@ public class State {
                 count = count + 1;
             else break;
         }
-        return count == Rule.WIN_REQUIRED;
+        return count >= Rule.WIN_REQUIRED;
     }
 
     public boolean hasVerticalWin(Move move, Mark player) {
@@ -141,7 +141,7 @@ public class State {
                 count = count + 1;
             else break;
         }
-        return count == Rule.WIN_REQUIRED;
+        return count >= Rule.WIN_REQUIRED;
     }
 
     public boolean hasDiagonalPrimaryWin(Move move, Mark player) {
@@ -158,7 +158,7 @@ public class State {
                 count = count + 1;
             else break;
         }
-        return count == Rule.WIN_REQUIRED;
+        return count >= Rule.WIN_REQUIRED;
     }
 
     public boolean hasDiagonalSubWin(Move move, Mark player) {
@@ -175,7 +175,7 @@ public class State {
                 count = count + 1;
             else break;
         }
-        return count == Rule.WIN_REQUIRED;
+        return count >= Rule.WIN_REQUIRED;
     }
 
     public boolean isOutOfRange(int i) {

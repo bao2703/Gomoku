@@ -51,7 +51,15 @@ public class GomokuFrame extends JFrame {
             Move move = alphaBeta.exec(state, Rule.MAX_DEPTH);
             markButton[move.row][move.col].makeMove();
             playerTurn = true;
+            checkState();
         }
+    }
+
+    public void checkState() {
+        gameState = state.checkState();
+        if (gameState == GameState.MAX_WIN) JOptionPane.showMessageDialog(null, "O Win");
+        else if (gameState == GameState.MIN_WIN) JOptionPane.showMessageDialog(null, "X Win");
+        else if (gameState == GameState.DRAW) JOptionPane.showMessageDialog(null, "Draw");
     }
 
     public void writeState(File file) throws IOException {
@@ -76,11 +84,18 @@ public class GomokuFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (active && playerTurn) {
+            if (active && playerTurn && gameState == GameState.ON_GOING) {
+                Move aiMove = state.getLastMove();
+                if (aiMove != null) {
+                    markButton[aiMove.row][aiMove.col].setForeground(Color.blue);
+                }
                 this.makeMove();
 
-                IterativeDeepeningThread iterativeDeepeningThread = new IterativeDeepeningThread(GomokuFrame.this, 0);
-                iterativeDeepeningThread.start();
+                checkState();
+                if (gameState == GameState.ON_GOING) {
+                    IterativeDeepeningThread iterativeDeepeningThread = new IterativeDeepeningThread(GomokuFrame.this, 0);
+                    iterativeDeepeningThread.start();
+                }
             }
         }
 
