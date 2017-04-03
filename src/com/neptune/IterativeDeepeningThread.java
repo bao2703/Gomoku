@@ -5,11 +5,9 @@ package com.neptune;
  */
 public class IterativeDeepeningThread extends Thread {
     private GomokuFrame gomokuFrame;
-    private int timeLimit;
 
-    public IterativeDeepeningThread(GomokuFrame gomokuFrame, int timeLimit) {
+    public IterativeDeepeningThread(GomokuFrame gomokuFrame) {
         this.gomokuFrame = gomokuFrame;
-        this.timeLimit = timeLimit;
     }
 
     @Override

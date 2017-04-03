@@ -37,10 +37,10 @@ public class AlphaBeta {
         if (depth == 0) {
             return evaluation.computeHeuristic(currentState);
         }
-        evaluation.computeSimpleOrder(currentState);
-        HashMap<Move, Integer> mapMoveSuccessors = new HashMap<>(MapUtil.sortByValue(currentState.getMoveSuccessors()));
 
+        HashMap<Move, Integer> mapMoveSuccessors = currentState.getMoveSuccessors();
         searchNode += mapMoveSuccessors.size();
+
         int bestValue;
         if (currentState.getCurrentPlayer() == Mark.MAX) {
             bestValue = alpha;

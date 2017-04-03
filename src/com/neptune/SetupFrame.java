@@ -18,7 +18,9 @@ public class SetupFrame extends JFrame {
         this.add(panel);
         panel.setLayout(new GridLayout(2, 2));
         JButton first = new JButton("First");
+        first.setFont(new Font("Arial", Font.BOLD, 45));
         JButton second = new JButton("Second");
+        second.setFont(new Font("Arial", Font.BOLD, 45));
         panel.add(first);
         panel.add(second);
         first.addActionListener(e -> {
