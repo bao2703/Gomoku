@@ -20,6 +20,7 @@ public class State {
         }
         moveHistory = new Stack<>();
         mapMoveSuccessors = new HashMap<>();
+        mapMoveSuccessors.put(new Move(5, 5), 0);
     }
 
     public State(State state) {
@@ -99,6 +100,7 @@ public class State {
     }
 
     public GameState checkState() {
+        if (moveHistory.empty()) return GameState.ON_GOING;
         if (moveHistory.size() == Math.pow(Rule.SIZE, 2)) return GameState.DRAW;
         Move lastMove = getLastMove();
         Mark player = getPlayer(lastMove.row, lastMove.col);

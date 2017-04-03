@@ -5,16 +5,10 @@ import javax.swing.*;
 public class Main {
 
     public static void main(String[] args) {
-//        Scanner scanner = new Scanner(System.in);
-//        int in = scanner.nextInt();
-//        Mark firstPlayer = Mark.MIN;
-//        if (in == 1) {
-//            firstPlayer = Mark.MAX;
-//        }
-        GomokuFrame gomokuFrame = new GomokuFrame();
-        gomokuFrame.setResizable(false);
-        gomokuFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        gomokuFrame.setSize(800, 800);
-        gomokuFrame.setVisible(true);
+        SetupFrame setupFrame = new SetupFrame();
+        setupFrame.setResizable(false);
+        setupFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setupFrame.setSize(300, 300);
+        setupFrame.setVisible(true);
     }
 }

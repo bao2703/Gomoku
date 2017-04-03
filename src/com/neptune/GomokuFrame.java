@@ -19,12 +19,14 @@ public class GomokuFrame extends JFrame {
     private boolean playerTurn = true;
     private AlphaBeta alphaBeta = new AlphaBeta();
 
-    public GomokuFrame() {
+    public GomokuFrame(boolean playerFirst) {
         state = new State();
         markButton = new MarkButton[Rule.SIZE][Rule.SIZE];
         initComponents();
-//        Move move = gomoku.getBestMove();
-//        markButton[move.row][move.col].makeMove();
+
+        if (!playerFirst) {
+            aiTurn();
+        }
     }
 
     private void initComponents() {
@@ -75,11 +77,8 @@ public class GomokuFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (active && playerTurn) {
-                Move aiMove = state.getLastMove();
-                if (aiMove != null) {
-                    markButton[aiMove.row][aiMove.col].setForeground(Color.blue);
-                }
                 this.makeMove();
+
                 IterativeDeepeningThread iterativeDeepeningThread = new IterativeDeepeningThread(GomokuFrame.this, 0);
                 iterativeDeepeningThread.start();
             }
@@ -93,10 +92,10 @@ public class GomokuFrame extends JFrame {
         private void changeIcon() {
             active = false;
             if (state.getCurrentPlayer() == Mark.MIN) {
-                this.setText("O");
+                this.setText("X");
                 this.setForeground(Color.red);
             } else {
-                this.setText("X");
+                this.setText("O");
                 this.setForeground(Color.magenta);
             }
         }

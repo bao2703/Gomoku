@@ -9,6 +9,7 @@ import java.util.Map;
 public class AlphaBeta {
     private Evaluation evaluation;
     private HashMap<Integer, Move> trackingMove;
+    private int searchNode = 0;
 
     public AlphaBeta() {
         evaluation = new Evaluation();
@@ -16,7 +17,14 @@ public class AlphaBeta {
     }
 
     public Move exec(State currentState, int depth) {
+        long tStart = System.currentTimeMillis();
         exec(currentState, Integer.MIN_VALUE, Integer.MAX_VALUE, depth);
+        long tEnd = System.currentTimeMillis();
+        long tDelta = tEnd - tStart;
+        double elapsedSeconds = tDelta / 1000.0;
+        System.out.println("Time: " + elapsedSeconds);
+        System.out.println("Node: " + searchNode);
+        searchNode = 0;
         return trackingMove.get(Rule.MAX_DEPTH);
     }
 
@@ -29,7 +37,10 @@ public class AlphaBeta {
         if (depth == 0) {
             return evaluation.computeHeuristic(currentState);
         }
-        HashMap<Move, Integer> mapMoveSuccessors = currentState.getMoveSuccessors();
+        evaluation.computeSimpleOrder(currentState);
+        HashMap<Move, Integer> mapMoveSuccessors = new HashMap<>(MapUtil.sortByValue(currentState.getMoveSuccessors()));
+
+        searchNode += mapMoveSuccessors.size();
         int bestValue;
         if (currentState.getCurrentPlayer() == Mark.MAX) {
             bestValue = alpha;

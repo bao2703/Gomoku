@@ -11,9 +11,9 @@ public class Counter {
         this(0, 0);
     }
 
-    public Counter(int o, int x) {
-        this.min = o;
-        this.max = x;
+    public Counter(int max, int min) {
+        this.min = max;
+        this.max = min;
     }
 
     public void exec(Mark mark) {
