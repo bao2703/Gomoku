@@ -24,13 +24,13 @@ class StateTest {
     }
 
     @Test
-    void getCurrentPlayer_O_first() {
+    void getCurrentPlayer_MIN_first() {
         Mark actual = state.getCurrentPlayer();
         assertEquals(Mark.MIN, actual);
     }
 
     @Test
-    void getCurrentPlayer_O_first_X_seccond() {
+    void getCurrentPlayer_MIN_first_MAX_second() {
         state.performMove(new Move(0, 0));
         Mark actual = state.getCurrentPlayer();
         assertEquals(Mark.MAX, actual);
