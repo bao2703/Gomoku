@@ -25,6 +25,7 @@ public class AlphaBeta {
         System.out.println("Time: " + elapsedSeconds);
         System.out.println("Node: " + searchNode);
         System.out.println("Best value: " + bestValue);
+        System.out.println();
         searchNode = 0;
         return trackingMove.get(Rule.MAX_DEPTH);
     }

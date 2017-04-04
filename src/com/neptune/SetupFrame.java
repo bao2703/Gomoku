@@ -7,8 +7,6 @@ import java.awt.*;
  * Created by Neptune on 4/3/2017.
  */
 public class SetupFrame extends JFrame {
-    private GomokuFrame gomokuFrame;
-
     public SetupFrame() {
         initComponents();
     }
@@ -24,17 +22,18 @@ public class SetupFrame extends JFrame {
         panel.add(first);
         panel.add(second);
         first.addActionListener(e -> {
-            gomokuFrame = new GomokuFrame(true);
-            showGomokuFrame();
+            Rule.PLAYER_FIRST = true;
+            initGomokuFrame();
         });
 
         second.addActionListener(e -> {
-            gomokuFrame = new GomokuFrame(false);
-            showGomokuFrame();
+            Rule.PLAYER_FIRST = false;
+            initGomokuFrame();
         });
     }
 
-    private void showGomokuFrame() {
+    private void initGomokuFrame() {
+        GomokuFrame gomokuFrame = new GomokuFrame();
         gomokuFrame.setResizable(false);
         gomokuFrame.setSize(800, 800);
         gomokuFrame.setVisible(true);

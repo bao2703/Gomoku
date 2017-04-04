@@ -5,6 +5,7 @@ package com.neptune;
  */
 public class IterativeDeepeningThread extends Thread {
     private GomokuFrame gomokuFrame;
+    private AlphaBeta alphaBeta = new AlphaBeta();
 
     public IterativeDeepeningThread(GomokuFrame gomokuFrame) {
         this.gomokuFrame = gomokuFrame;
@@ -13,6 +14,8 @@ public class IterativeDeepeningThread extends Thread {
     @Override
     public void run() {
         gomokuFrame.setPlayerTurn(false);
-        gomokuFrame.aiTurn();
+        Move aiMove = alphaBeta.exec(gomokuFrame.state, Rule.MAX_DEPTH);
+        gomokuFrame.performMove(aiMove);
+        gomokuFrame.setPlayerTurn(true);
     }
 }

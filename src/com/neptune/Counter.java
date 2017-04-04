@@ -28,16 +28,21 @@ public class Counter {
     public int getHeuristic() {
         int heuristic = 0;
         if (max * min == 0 && max != min) {
-            if (min == 4) heuristic -= simpleDef(min);
-            else heuristic -= simple(min);
-            if (max == 4) heuristic += simpleDef(min);
-            else heuristic += simple(max);
+            if (Rule.PLAYER_FIRST) {
+                heuristic -= simpleDef(min);
+                heuristic += simple(max);
+            } else {
+                heuristic -= simple(min);
+                heuristic += simpleDef(max);
+            }
         }
         return heuristic;
     }
 
     private int simpleDef(int num) {
-        return simple(num) * 2;
+        int result = simple(num);
+        if (num == 4) result *= 2;
+        return result;
     }
 
     private int simple(int num) {
