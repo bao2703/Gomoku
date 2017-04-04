@@ -14,22 +14,20 @@ import java.io.IOException;
  */
 public class GomokuFrame extends JFrame {
     public State state;
-    private GameState gameState = GameState.ON_GOING;
     private MarkButton[][] markButton;
     private boolean playerTurn = true;
-    private AlphaBeta alphaBeta = new AlphaBeta();
 
-    public GomokuFrame(boolean playerFirst) {
-        state = new State();
-        markButton = new MarkButton[Rule.SIZE][Rule.SIZE];
+    public GomokuFrame() {
         initComponents();
 
-        if (!playerFirst) {
+        if (!Rule.PLAYER_FIRST) {
             aiTurn();
         }
     }
 
     private void initComponents() {
+        state = new State();
+        markButton = new MarkButton[Rule.SIZE][Rule.SIZE];
         JPanel panel = new JPanel();
         this.add(panel);
         panel.setLayout(new GridLayout(Rule.SIZE, Rule.SIZE));
@@ -47,14 +45,17 @@ public class GomokuFrame extends JFrame {
     }
 
     public void aiTurn() {
-        Move move = alphaBeta.exec(state, Rule.MAX_DEPTH);
-        markButton[move.row][move.col].makeMove();
-        playerTurn = true;
+        IterativeDeepeningThread iterativeDeepeningThread = new IterativeDeepeningThread(GomokuFrame.this);
+        iterativeDeepeningThread.start();
+    }
+
+    public void performMove(Move move) {
+        markButton[move.row][move.col].setMove();
         checkState();
     }
 
     public void checkState() {
-        gameState = state.checkState();
+        GameState gameState = state.checkState();
         if (gameState == GameState.MAX_WIN) JOptionPane.showMessageDialog(null, "O Win");
         else if (gameState == GameState.MIN_WIN) JOptionPane.showMessageDialog(null, "X Win");
         else if (gameState == GameState.DRAW) JOptionPane.showMessageDialog(null, "Draw");
@@ -84,22 +85,18 @@ public class GomokuFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (active && playerTurn && gameState == GameState.ON_GOING) {
+            if (active && playerTurn) {
                 Move aiMove = state.getLastMove();
                 if (aiMove != null) {
                     markButton[aiMove.row][aiMove.col].setForeground(Color.blue);
                 }
-                this.makeMove();
+                performMove(new Move(row, col));
 
-                checkState();
-                if (gameState == GameState.ON_GOING) {
-                    IterativeDeepeningThread iterativeDeepeningThread = new IterativeDeepeningThread(GomokuFrame.this);
-                    iterativeDeepeningThread.start();
-                }
+                aiTurn();
             }
         }
 
-        public void makeMove() {
+        public void setMove() {
             changeIcon();
             state.performMove(new Move(row, col));
         }
