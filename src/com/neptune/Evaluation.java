@@ -8,54 +8,22 @@ public class Evaluation {
         int heuristic = 0;
         for (int row = 0; row < Rule.SIZE; row++) {
             for (int col = 0; col < Rule.SIZE; col++) {
-                heuristic += computeHorizontal(state, row, col);
-                heuristic += computeVertical(state, row, col);
-                heuristic += computeDiagonalPrimary(state, row, col);
-                heuristic += computeDiagonalSub(state, row, col);
+                Counter counterHorizontal = new Counter();
+                Counter counterVertical = new Counter();
+                Counter counterDiagonalPrimary = new Counter();
+                Counter counterDiagonalSub = new Counter();
+                for (int i = 0; i < Rule.WIN_REQUIRED; i++) {
+                    if (state.canFiveInARow(col)) counterHorizontal.exec(state.board[row][col + i]);
+                    if (state.canFiveInARow(row)) counterVertical.exec(state.board[row + i][col]);
+                    if (state.canFiveInARow(col) && state.canFiveInARow(row))
+                        counterDiagonalPrimary.exec(state.board[row + i][col + i]);
+                    if (row >= Rule.WIN_REQUIRED - 1 && state.canFiveInARow(col))
+                        counterDiagonalSub.exec(state.board[row - i][col + i]);
+                }
+                heuristic += counterHorizontal.getHeuristic() + counterVertical.getHeuristic() +
+                        counterDiagonalPrimary.getHeuristic() + counterDiagonalSub.getHeuristic();
             }
         }
         return heuristic;
-    }
-
-    public int computeHorizontal(State state, int currentRow, int currentCol) {
-        if (!state.canFiveInARow(currentCol))
-            return 0;
-        Counter counter = new Counter();
-        for (int i = 0; i < Rule.WIN_REQUIRED; i++) {
-            counter.exec(state.board[currentRow][currentCol + i]);
-        }
-        return counter.getHeuristic();
-    }
-
-    public int computeVertical(State state, int currentRow, int currentCol) {
-        if (!state.canFiveInARow(currentRow))
-            return 0;
-        Counter counter = new Counter();
-        for (int i = 0; i < Rule.WIN_REQUIRED; i++) {
-            counter.exec(state.board[currentRow + i][currentCol]);
-        }
-        return counter.getHeuristic();
-    }
-
-    public int computeDiagonalPrimary(State state, int currentRow, int currentCol) {
-        if (!state.canFiveInARow(currentCol) || !state.canFiveInARow(currentRow)) {
-            return 0;
-        }
-        Counter counter = new Counter();
-        for (int i = 0; i < Rule.WIN_REQUIRED; i++) {
-            counter.exec(state.board[currentRow + i][currentCol + i]);
-        }
-        return counter.getHeuristic();
-    }
-
-    public int computeDiagonalSub(State state, int currentRow, int currentCol) {
-        if (currentRow < Rule.WIN_REQUIRED - 1 || !state.canFiveInARow(currentCol)) {
-            return 0;
-        }
-        Counter counter = new Counter();
-        for (int i = 0; i < Rule.WIN_REQUIRED; i++) {
-            counter.exec(state.board[currentRow - i][currentCol + i]);
-        }
-        return counter.getHeuristic();
     }
 }

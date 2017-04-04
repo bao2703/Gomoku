@@ -18,12 +18,13 @@ public class AlphaBeta {
 
     public Move exec(State currentState, int depth) {
         long tStart = System.currentTimeMillis();
-        exec(currentState, Integer.MIN_VALUE, Integer.MAX_VALUE, depth);
+        int bestValue = exec(currentState, Integer.MIN_VALUE, Integer.MAX_VALUE, depth);
         long tEnd = System.currentTimeMillis();
         long tDelta = tEnd - tStart;
         double elapsedSeconds = tDelta / 1000.0;
         System.out.println("Time: " + elapsedSeconds);
         System.out.println("Node: " + searchNode);
+        System.out.println("Best value: " + bestValue);
         searchNode = 0;
         return trackingMove.get(Rule.MAX_DEPTH);
     }
