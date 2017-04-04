@@ -35,6 +35,7 @@ public class GomokuFrame extends JFrame {
             for (int j = 0; j < Rule.SIZE; j++) {
                 markButton[i][j] = new MarkButton(i, j);
                 markButton[i][j].setFont(new Font("Arial", Font.BOLD, 45));
+                markButton[i][j].setOpaque(true);
                 panel.add(markButton[i][j]);
             }
         }
@@ -88,7 +89,8 @@ public class GomokuFrame extends JFrame {
             if (active && playerTurn) {
                 Move aiMove = state.getLastMove();
                 if (aiMove != null) {
-                    markButton[aiMove.row][aiMove.col].setForeground(Color.blue);
+                    if (Rule.PLAYER_FIRST) markButton[aiMove.row][aiMove.col].setForeground(Color.BLUE);
+                    else markButton[aiMove.row][aiMove.col].setForeground(Color.RED);
                 }
                 performMove(new Move(row, col));
 
@@ -105,11 +107,12 @@ public class GomokuFrame extends JFrame {
             active = false;
             if (state.getCurrentPlayer() == Mark.MIN) {
                 this.setText("X");
-                this.setForeground(Color.red);
+                this.setForeground(Color.RED);
             } else {
                 this.setText("O");
-                this.setForeground(Color.magenta);
+                this.setForeground(Color.BLUE);
             }
+            if (!playerTurn) this.setForeground(Color.MAGENTA);
         }
     }
 }
