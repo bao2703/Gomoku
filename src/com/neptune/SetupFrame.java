@@ -7,6 +7,8 @@ import java.awt.*;
  * Created by Neptune on 4/3/2017.
  */
 public class SetupFrame extends JFrame {
+    private Font defaultFont = new Font("Arial", Font.BOLD, 45);
+
     public SetupFrame() {
         initComponents();
     }
@@ -15,9 +17,9 @@ public class SetupFrame extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(2, 1));
         JButton first = new JButton("First");
-        first.setFont(new Font("Arial", Font.BOLD, 45));
+        first.setFont(defaultFont);
         JButton second = new JButton("Second");
-        second.setFont(new Font("Arial", Font.BOLD, 45));
+        second.setFont(defaultFont);
         panel.add(first);
         panel.add(second);
         this.add(panel);
@@ -25,13 +27,13 @@ public class SetupFrame extends JFrame {
         JPanel panel2 = new JPanel();
         panel2.setLayout(new GridLayout(4, 1));
         JButton ez = new JButton("Easy");
-        ez.setFont(new Font("Arial", Font.BOLD, 45));
+        ez.setFont(defaultFont);
         JButton medium = new JButton("Medium");
-        medium.setFont(new Font("Arial", Font.BOLD, 45));
+        medium.setFont(defaultFont);
         JButton hard = new JButton("Hard");
-        hard.setFont(new Font("Arial", Font.BOLD, 45));
+        hard.setFont(defaultFont);
         JButton back = new JButton("Back");
-        back.setFont(new Font("Arial", Font.BOLD, 45));
+        back.setFont(defaultFont);
         panel2.add(ez);
         panel2.add(medium);
         panel2.add(hard);

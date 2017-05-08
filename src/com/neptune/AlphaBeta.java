@@ -8,12 +8,12 @@ import java.util.Map;
  */
 public class AlphaBeta {
     private Evaluation evaluation;
-    private HashMap<Integer, Move> trackingMove;
+    private Move[] trackingMove;
     private int searchNode = 0;
 
     public AlphaBeta() {
         evaluation = new Evaluation();
-        trackingMove = new HashMap<>();
+        trackingMove = new Move[Rule.MAX_DEPTH + 1];
     }
 
     public Move exec(State currentState, int depth) {
@@ -27,7 +27,7 @@ public class AlphaBeta {
         System.out.println("Best value: " + bestValue);
         System.out.println();
         searchNode = 0;
-        return trackingMove.get(Rule.MAX_DEPTH);
+        return trackingMove[Rule.MAX_DEPTH];
     }
 
     private int exec(State currentState, int alpha, int beta, int depth) {
@@ -53,7 +53,7 @@ public class AlphaBeta {
                 int childValue = exec(successorState, bestValue, beta, depth - 1);
                 if (childValue > bestValue) {
                     bestValue = childValue;
-                    trackingMove.put(depth, move);
+                    trackingMove[depth] = move;
                 }
                 if (bestValue >= beta) {
                     break;
@@ -68,7 +68,7 @@ public class AlphaBeta {
                 int childValue = exec(successorState, alpha, bestValue, depth - 1);
                 if (childValue < bestValue) {
                     bestValue = childValue;
-                    trackingMove.put(depth, move);
+                    trackingMove[depth] = move;
                 }
                 if (bestValue <= alpha) {
                     break;
